@@ -1,7 +1,7 @@
 # OMR-API
 
 ## Description
-This project is designed to transcribe sheet music from various formats into MusicXML and MIDI files using Audiveris and Music21 libraries. It supports HEIC image format conversion to PNG for processing. The transcribed MusicXML files are further exported to MIDI format for playback and editing in MIDI-compatible software.
+OMR-API is a project designed to transcribe sheet music from various formats into MusicXML and MIDI files using Audiveris and Music21 libraries. It supports HEIC image format conversion to PNG for processing. The transcribed MusicXML files are further exported to MIDI format for playback and editing in MIDI-compatible software.
 
 ## Features
 - Convert HEIC images to PNG for transcription.
@@ -51,7 +51,7 @@ This project is designed to transcribe sheet music from various formats into Mus
 3. **Cleanup**
    - To manually clean up all files in the `output` directory, run:
      ```
-     python clean.py
+     python cleanup.py
      ```
 
 ## Notes
