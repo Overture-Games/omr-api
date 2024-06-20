@@ -1,3 +1,4 @@
 Flask==2.0.2
 Pillow==8.4.0
 reportlab==3.6.3
+music21==6.3.0
