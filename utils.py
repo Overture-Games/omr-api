@@ -3,6 +3,7 @@ import subprocess
 import logging
 from PIL import Image
 from music21 import converter
+import sys
 
 # Configuration
 OUTPUT_DIR = 'output'
@@ -127,5 +128,10 @@ def run_audiveris(input_filepath):
         except Exception as e:
             logging.error(f'Failed to terminate process: {e}')
 
-# Example usage:
-# run_audiveris('/path/to/your/file.png')
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python utils.py <input_filepath>")
+        sys.exit(1)
+
+    input_filepath = sys.argv[1]
+    run_audiveris(input_filepath)
