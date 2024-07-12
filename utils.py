@@ -44,7 +44,8 @@ def generate_midi_from_mxl(input_filepath, output_dir):
 
 def run_audiveris(input_filepath, output_dir):
     """Run Audiveris on the specified file."""
-    AUDIVERIS_PATH = '/home/ubuntu/audiveris/app/build/scripts/Audiveris'
+    # AUDIVERIS_PATH = '/home/ubuntu/audiveris/app/build/scripts/Audiveris'
+    AUDIVERIS_PATH = '/Users/hguan/Documents/GitHub/audiveris/app/build/install/app/bin/Audiveris'
 
     try:
         logging.debug(f'Contents of output directory before running Audiveris: {os.listdir(output_dir)}')
@@ -60,20 +61,21 @@ def run_audiveris(input_filepath, output_dir):
         # Run Audiveris command
         command = [AUDIVERIS_PATH, '-batch', '-output', output_dir, input_filepath]
         logging.debug(f'Running Audiveris command: {" ".join(command)}')
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
         try:
-            stdout, stderr = process.communicate(timeout=600)
+            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=600)
+            stdout, stderr = result.stdout, result.stderr
         except subprocess.TimeoutExpired:
-            process.kill()
-            stdout, stderr = process.communicate()
-            logging.error(f'Audiveris command timed out: {stderr.decode("utf-8")}')
+            logging.error('Audiveris command timed out')
+            generate_midi_from_mxl(input_filepath, output_dir)
+            cleanup_files(output_dir)
             return
 
         logging.debug(f'Audiveris output: {stdout.decode("utf-8")}')
         logging.debug(f'Audiveris errors: {stderr.decode("utf-8")}')
-        
-        if process.returncode != 0:
-            raise subprocess.CalledProcessError(process.returncode, command, output=stdout, stderr=stderr)
+
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(result.returncode, command, output=stdout, stderr=stderr)
 
         logging.debug(f'Contents of output directory after running Audiveris: {os.listdir(output_dir)}')
 
@@ -87,17 +89,14 @@ def run_audiveris(input_filepath, output_dir):
         base_filename = os.path.splitext(os.path.basename(input_filepath))[0]
         mxl_filepath = os.path.join(output_dir, f"{base_filename}.mxl")
         export_command = [AUDIVERIS_PATH, '-export', omr_filepath, '-output', mxl_filepath]
-        
+
         try:
-            logging.debug(f'Running export command: {" ".join(export_command)}')
             export_result = subprocess.run(export_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=20)
             logging.debug(f'Export output: {export_result.stdout.decode("utf-8")}')
             logging.debug(f'Export errors: {export_result.stderr.decode("utf-8")}')
-            
         except subprocess.TimeoutExpired:
-            # Generate MIDI file from MusicXML (.mxl)
-            generate_midi_from_mxl(input_filepath, output_dir)
             logging.error('Export command timed out')
+            generate_midi_from_mxl(input_filepath, output_dir)
             cleanup_files(output_dir)
             return
         except subprocess.CalledProcessError as e:
@@ -116,7 +115,7 @@ def run_audiveris(input_filepath, output_dir):
         logging.error(f'Processing failed: {e.stderr.decode("utf-8")}')
     finally:
         try:
-            if process.poll() is None:
+            if process and process.poll() is None:
                 process.terminate()
                 process.wait()
                 logging.debug('Audiveris process terminated')

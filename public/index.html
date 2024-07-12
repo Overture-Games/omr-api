@@ -59,14 +59,6 @@
             font-size: 14px;
             color: #555;
         }
-
-        .download-buttons {
-            margin-top: 20px;
-        }
-
-        .download-buttons button {
-            margin: 0 10px;
-        }
     </style>
 </head>
 <body>
@@ -77,11 +69,48 @@
             <button type="submit">Upload</button>
         </form>
         <div class="message" id="message"></div>
-        <div class="download-buttons" id="downloadButtons" style="display: none;">
-            <button id="downloadMidi">Download MIDI</button>
-            <button id="downloadMxl">Download MusicXML</button>
-        </div>
+        <div id="downloadLinks"></div>
     </div>
-    <script src="script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const messageElement = document.getElementById('message');
+            const downloadLinksElement = document.getElementById('downloadLinks');
+            
+            if (response.ok) {
+                const data = await response.json();
+                messageElement.textContent = 'File uploaded successfully!';
+                messageElement.style.color = 'green';
+
+                downloadLinksElement.innerHTML = `
+                    <a href="${data.midiFile}" target="_blank" class="download-link">Download MIDI</a>
+                    <a href="${data.mxlFile}" target="_blank" class="download-link">Download MusicXML</a>
+                `;
+
+                // Listen for download completion
+                document.querySelectorAll('.download-link').forEach(link => {
+                    link.addEventListener('click', (event) => {
+                        socket.emit('fileDownloaded', { filePath: link.getAttribute('href') });
+                    });
+                });
+            } else {
+                messageElement.textContent = 'File upload failed!';
+                messageElement.style.color = 'red';
+            }
+        });
+    </script>
 </body>
 </html>
