@@ -44,7 +44,7 @@ def generate_midi_from_mxl(input_filepath, output_dir):
 
 def run_audiveris(input_filepath, output_dir):
     """Run Audiveris on the specified file."""
-    AUDIVERIS_PATH = '/Users/hguan/Documents/GitHub/audiveris/app/build/install/app/bin/Audiveris'
+    AUDIVERIS_PATH = '/home/ubuntu/audiveris/app/build/scripts/Audiveris'
 
     try:
         logging.debug(f'Contents of output directory before running Audiveris: {os.listdir(output_dir)}')

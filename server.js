@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
+import { WebSocketServer } from 'ws';
 
 const app = express();
 const port = 5000;
@@ -22,6 +23,33 @@ app.use(express.static('public'));
 // Route for the root URL
 app.get('/', (req, res) => {
   res.sendFile(path.join(path.resolve(), 'public', 'index.html'));
+});
+
+// WebSocket Server
+const wss = new WebSocketServer({ noServer: true });
+
+wss.on('connection', (ws) => {
+  console.log('User connected');
+
+  ws.on('message', (message) => {
+    console.log('Received:', message);
+  });
+
+  ws.on('close', () => {
+    console.log('User disconnected');
+    // Perform any cleanup tasks here
+  });
+});
+
+// Upgrade HTTP server to handle WebSocket connections
+const server = app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+
+server.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit('connection', ws, request);
+  });
 });
 
 // Combined Upload and Transcribe Endpoint
@@ -70,7 +98,3 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 // Serve the output directory for downloads
 app.use('/output', express.static('output'));
-
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
