@@ -71,7 +71,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
       res.status(500).send('Error processing file');
     }
   });
-});
+}); 
 
 // Serve the output directory for downloads
 app.use('/output', express.static('output'));
@@ -82,13 +82,6 @@ io.on('connection', (socket) => {
 
   socket.on('fileDownloaded', (data) => {
     console.log(`File downloaded: ${data.filePath}`);
-    fs.unlink(data.filePath, (err) => {
-      if (err) {
-        console.error(`Error deleting file: ${err}`);
-      } else {
-        console.log(`Deleted file: ${data.filePath}`);
-      }
-    });
   });
 
   socket.on('disconnect', () => {
