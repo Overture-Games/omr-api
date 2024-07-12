@@ -1,7 +1,3 @@
-Here's the updated README file reflecting the changes in your project structure and functionality:
-
----
-
 # OMR-API
 
 ## Description
