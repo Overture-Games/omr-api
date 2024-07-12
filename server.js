@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 
 const app = express();
 const port = 5000;
@@ -31,27 +31,45 @@ app.post('/upload', upload.single('file'), (req, res) => {
     return res.status(400).send('No file uploaded.');
   }
 
-  const filePath = path.join(path.resolve(), 'uploads', req.file.filename);
-  console.log(`File received for transcription: ${filePath}`);
+  const inputFilePath = path.join(path.resolve(), 'uploads', req.file.filename);
+  const outputDir = path.join(path.resolve(), 'output');
 
-  // Call the Python script
-  exec(`python3 utils.py ${filePath}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing Python script: ${error.message}`);
-      return res.status(500).send(`Error processing file: ${error.message}`);
-    }
-    if (stderr) {
-      console.error(`Error in Python script: ${stderr}`);
-      return res.status(500).send(`Error processing file: ${stderr}`);
-    }
+  console.log(`File received for transcription: ${inputFilePath}`);
 
-    console.log(`Python script output: ${stdout}`);
-    res.send('File processing complete!');
-    
-    // Clean up the uploaded file
-    fs.unlinkSync(filePath);
+  // Call the Python script to run Audiveris
+  const pythonProcess = spawn('python3', ['utils.py', inputFilePath, outputDir]);
+
+  pythonProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  pythonProcess.on('close', (code) => {
+    console.log(`Python process exited with code ${code}`);
+
+    if (code === 0) {
+      const baseFilename = path.basename(req.file.filename, path.extname(req.file.filename));
+      const midiFilePath = path.join(outputDir, `${baseFilename}.mid`);
+      const mxlFilePath = path.join(outputDir, `${baseFilename}.mxl`);
+
+      res.json({
+        midiFile: `/output/${baseFilename}.mid`,
+        mxlFile: `/output/${baseFilename}.mxl`
+      });
+
+      // Optionally, delete the uploaded file after processing
+      fs.unlinkSync(inputFilePath);
+    } else {
+      res.status(500).send('Error processing file');
+    }
   });
 });
+
+// Serve the output directory for downloads
+app.use('/output', express.static('output'));
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

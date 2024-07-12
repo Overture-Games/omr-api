@@ -59,6 +59,25 @@
             font-size: 14px;
             color: #555;
         }
+
+        .download-buttons {
+            margin-top: 20px;
+        }
+
+        .download-buttons a {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .download-buttons a:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +88,41 @@
             <button type="submit">Upload</button>
         </form>
         <div class="message" id="message"></div>
+        <div class="download-buttons" id="downloadButtons" style="display: none;">
+            <a id="downloadMidi" href="#" download>Download MIDI</a>
+            <a id="downloadMxl" href="#" download>Download MusicXML</a>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const messageElement = document.getElementById('message');
+            const downloadButtons = document.getElementById('downloadButtons');
+
+            if (response.ok) {
+                const data = await response.json();
+                messageElement.textContent = 'File uploaded successfully!';
+                messageElement.style.color = 'green';
+
+                document.getElementById('downloadMidi').href = data.midiFile;
+                document.getElementById('downloadMxl').href = data.mxlFile;
+                downloadButtons.style.display = 'block';
+            } else {
+                messageElement.textContent = 'File upload failed!';
+                messageElement.style.color = 'red';
+                downloadButtons.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
