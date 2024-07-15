@@ -2,115 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>File Upload</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        input[type="file"] {
-            display: block;
-            margin: 20px auto;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 20px auto;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .message {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-        }
-    </style>
+    <title>Sheet Music Transcriber</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <div class="header-title">Sheet Music Transcriber</div>
+            <div class="header-links">
+                <a href="#" class="header-link">Home</a>
+                <a href="#" class="header-link">FAQ</a>
+            </div>
+        </div>
         <h1>Upload a File</h1>
         <form id="uploadForm" enctype="multipart/form-data">
             <input type="file" id="fileInput" name="file" required>
             <button type="submit">Upload</button>
         </form>
         <div class="message" id="message"></div>
-        <div id="downloadLinks"></div>
+        <div class="download-buttons" id="downloadButtons" style="display: none;">
+            <button id="downloadMidi" class="download-button">Download MIDI</button>
+            <button id="downloadMxl" class="download-button">Download MusicXML</button>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-
-        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const formData = new FormData();
-            const fileInput = document.getElementById('fileInput');
-            formData.append('file', fileInput.files[0]);
-
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const messageElement = document.getElementById('message');
-            const downloadLinksElement = document.getElementById('downloadLinks');
-            
-            if (response.ok) {
-                const data = await response.json();
-                messageElement.textContent = 'File uploaded successfully!';
-                messageElement.style.color = 'green';
-
-                downloadLinksElement.innerHTML = `
-                    <a href="${data.midiFile}" target="_blank" class="download-link">Download MIDI</a>
-                    <a href="${data.mxlFile}" target="_blank" class="download-link">Download MusicXML</a>
-                `;
-
-                // Listen for download completion
-                document.querySelectorAll('.download-link').forEach(link => {
-                    link.addEventListener('click', (event) => {
-                        socket.emit('fileDownloaded', { filePath: link.getAttribute('href') });
-                    });
-                });
-            } else {
-                messageElement.textContent = 'File upload failed!';
-                messageElement.style.color = 'red';
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

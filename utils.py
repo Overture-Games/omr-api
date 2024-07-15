@@ -63,7 +63,7 @@ def run_audiveris(input_filepath, output_dir):
         logging.debug(f'Running Audiveris command: {" ".join(command)}')
 
         try:
-            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=600)
+            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=500)
             stdout, stderr = result.stdout, result.stderr
         except subprocess.TimeoutExpired:
             logging.error('Audiveris command timed out')
@@ -114,13 +114,7 @@ def run_audiveris(input_filepath, output_dir):
     except subprocess.CalledProcessError as e:
         logging.error(f'Processing failed: {e.stderr.decode("utf-8")}')
     finally:
-        try:
-            if process and process.poll() is None:
-                process.terminate()
-                process.wait()
-                logging.debug('Audiveris process terminated')
-        except Exception as e:
-            logging.error(f'Failed to terminate process: {e}')
+        logging.debug('Audiveris process completed.')
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
