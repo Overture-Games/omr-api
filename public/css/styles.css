@@ -28,7 +28,8 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 20px;
-    width: 45vw; /* Ensure it fits side by side with the FAQ section */
+    width: 100%; /* Ensure it fits side by side with the FAQ section */
+    max-width: 100%;
 }
 
 *, *:before, *:after {
@@ -44,6 +45,7 @@ body {
     max-width: 80rem;
     margin: auto;
     position: relative;
+    flex-direction: column; /* Ensure it stacks vertically on smaller screens */
 }
 
 .cs-content {
@@ -293,9 +295,7 @@ input[type="file"] {
 
 @media only screen and (min-width: 64rem) {
     .cs-container {
-        max-width: 80rem;
         flex-direction: row;
-        justify-content: space-between;
     }
     .cs-content {
         width: 45vw;

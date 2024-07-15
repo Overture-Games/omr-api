@@ -3,82 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>Sheet Music Transcriber</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-<section id="contact-1333">
-    <div class="cs-container">
-        <!-- File Upload Section -->
-        <div class="cs-content file-upload">
-            <span class="cs-topper">File Upload</span>
-            <h2 class="cs-title">Upload your File</h2>
-            <div class="drag-area">
-                <div class="icon">
-                    <i class="fas fa-images"></i>
-                </div>
-                <span class="header">Drag & Drop</span>
-                <span class="header">or <span class="button">browse</span></span>
-                <input type="file" hidden />
-                <span class="support">Supports: JPEG, JPG, PNG</span>
-            </div>
-            <div>
-                <button class="cs-button-solid download">Download</button>
-            </div>
-        </div>
-        
-        <!-- FAQ Section -->
-        <div class="cs-content faq">
-            <span class="cs-topper">Asked Questions</span>
-            <h2 class="cs-title">Frequently Asked Questions</h2>
-            <ul class="cs-faq-group">
-                <li class="cs-faq-item active">
-                    <button class="cs-button">
-                        <span class="cs-button-text">What is the best way to start investing?</span>
-                    </button>
-                    <p class="cs-item-p">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
-                    </p>
-                </li>
-                <li class="cs-faq-item">
-                    <button class="cs-button">
-                        <span class="cs-button-text">What are the tax implications of investing in the stock market?</span>
-                    </button>
-                    <p class="cs-item-p">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
-                    </p>
-                </li>
-                <li class="cs-faq-item">
-                    <button class="cs-button">
-                        <span class="cs-button-text">How can I improve my credit score?</span>
-                    </button>
-                    <p class="cs-item-p">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
-                    </p>
-                </li>
-                <li class="cs-faq-item">
-                    <button class="cs-button">
-                        <span class="cs-button-text">What is the difference between a traditional IRA and a Roth IRA?</span>
-                    </button>
-                    <p class="cs-item-p">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
-                    </p>
-                </li>
-                <li class="cs-faq-item">
-                    <button class="cs-button">
-                        <span class="cs-button-text">How can I reduce my tax liability as a self-employed individual?</span>
-                    </button>
-                    <p class="cs-item-p">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
-                    </p>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section>
 
+    <section id="contact-1333">
+        <div class="cs-container">
+            <!-- File Upload Section -->
+            <div class="cs-content file-upload">
+                <span class="cs-topper">File Upload</span>
+                <h2 class="cs-title">Sheet Music Transcriber</h2>
+                <div class="drag-area">
+                    <div class="icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <span class="header">Drag & Drop</span>
+                    <span class="header">or <span class="button">browse</span></span>
+                    <input type="file" hidden />
+                    <span class="support">Supports: JPEG, JPG, PNG, HEIC, PDF</span>
+                </div>
+            </div>
+            
+            <!-- FAQ Section -->
+            <div class="cs-content faq">
+                <span class="cs-topper">Asked Questions</span>
+                <h2 class="cs-title">Frequently Asked Questions</h2>
+                <ul class="cs-faq-group">
+                    <li class="cs-faq-item active">
+                        <button class="cs-button">
+                            <span class="cs-button-text">What is the best way to start investing?</span>
+                        </button>
+                        <p class="cs-item-p">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
+                        </p>
+                    </li>
+                    <!-- Add other FAQ items here -->
+                </ul>
+            </div>
+        </div>
+    </section>
+
+<script src="/socket.io/socket.io.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
