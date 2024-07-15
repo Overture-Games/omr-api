@@ -1,8 +1,11 @@
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
 /* Basic resets */
 body, html {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     height: 100%;
     background-color: #e0f7fa;
 }
@@ -37,6 +40,7 @@ body, html {
 .header-title {
     font-size: 24px;
     font-weight: bold;
+    font-family: 'Inter', sans-serif;
     color: #00796b;
 }
 
@@ -49,6 +53,7 @@ body, html {
     text-decoration: none;
     color: #00796b;
     font-size: 16px;
+    font-family: 'Inter', sans-serif;
     font-weight: bold;
     transition: color 0.3s;
 }
@@ -58,6 +63,17 @@ body, html {
 }
 
 /* Form styling */
+.drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.3s;
+}
+
+.drop-area.dragover {
+    border-color: #00796b;
+}
+
 input[type="file"] {
     display: block;
     margin: 20px auto;
@@ -88,6 +104,7 @@ button:hover {
 .message {
     margin-top: 20px;
     font-size: 14px;
+    font-family: 'Inter', sans-serif;
     color: #00796b;
 }
 
@@ -107,6 +124,7 @@ button:hover {
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     margin: 10px auto;
     cursor: pointer;

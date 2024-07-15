@@ -1,10 +1,32 @@
 const socket = io();
 
+const dropArea = document.getElementById('dropArea');
+const fileInput = document.getElementById('fileInput');
+
+dropArea.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dropArea.classList.add('dragover');
+});
+
+dropArea.addEventListener('dragleave', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dropArea.classList.remove('dragover');
+});
+
+dropArea.addEventListener('drop', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dropArea.classList.remove('dragover');
+    const files = event.dataTransfer.files;
+    fileInput.files = files;
+});
+
 document.getElementById('uploadForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const formData = new FormData();
-    const fileInput = document.getElementById('fileInput');
     formData.append('file', fileInput.files[0]);
 
     const response = await fetch('/upload', {

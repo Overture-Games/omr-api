@@ -16,7 +16,10 @@
         </div>
         <h1>Upload a File</h1>
         <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" name="file" required>
+            <div class="drop-area" id="drop-area">
+                <p>Drag & drop a file here or click to select a file</p>
+                <input type="file" id="fileInput" name="file" required>
+            </div>
             <button type="submit">Upload</button>
         </form>
         <div class="message" id="message"></div>
@@ -24,6 +27,24 @@
             <button id="downloadMidi" class="download-button">Download MIDI</button>
             <button id="downloadMxl" class="download-button">Download MusicXML</button>
         </div>
+        <!-- About our service section -->
+        <section class="about-service">
+            <h2>About our service</h2>
+            <div class="service-description">
+                <div class="service-item">
+                    <h3>How to use 2pdf.com</h3>
+                    <p>Drag your PDF file onto the page and select the actions you want to perform with it. You can convert your PDF file to other formats, reduce the size of the PDF, merge several PDF files into one, or split into several separate files. All services are free and work online, you do not need to install anything on your computer.</p>
+                </div>
+                <div class="service-item">
+                    <h3>You do not need to worry about file security.</h3>
+                    <p>Your downloaded files will be deleted immediately after conversion, and converted files will be deleted after 24 hours. All files are protected from access by third parties, no one except you can access them.</p>
+                </div>
+                <div class="service-item">
+                    <h3>PDF converter for all platforms</h3>
+                    <p>2pdf.com works in all browsers and on all platforms. You can convert, connect, rotate, split PDF files without the need to download and install programs.</p>
+                </div>
+            </div>
+        </section>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
