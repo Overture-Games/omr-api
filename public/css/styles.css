@@ -135,3 +135,57 @@ button:hover {
 .download-button:hover {
     background-color: #004d40;
 }
+
+/* About service section */
+.about-service {
+    margin-top: 40px;
+    width: 100%;
+    text-align: center;
+}
+
+.about-service h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00796b;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.about-service h2::after {
+    content: '';
+    width: 50px;
+    height: 4px;
+    background-color: #e53935;
+    display: block;
+    margin: 10px auto 0;
+}
+
+.service-description {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service-item {
+    flex: 1 1 calc(33% - 20px);
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.service-item h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00796b;
+    margin-bottom: 10px;
+}
+
+.service-item p {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+}
