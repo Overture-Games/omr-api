@@ -5,14 +5,27 @@ import path from 'path';
 import { spawn } from 'child_process';
 import http from 'http';
 import { Server } from 'socket.io';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
+const pythonPath = process.env.PYTHON_PATH || 'python3';
 
 const server = http.createServer(app);
 const io = new Server(server);
 
 const upload = multer({ dest: 'uploads/' });
+
+const ensureDirectoryExistence = (dir) => {
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+};
+
+ensureDirectoryExistence(path.join(path.resolve(), 'uploads'));
+ensureDirectoryExistence(path.join(path.resolve(), 'output'));
 
 // CORS Middleware
 app.use((req, res, next) => {
@@ -42,7 +55,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
   console.log(`File received for transcription: ${inputFilePath}`);
 
   // Call the Python script to run Audiveris
-  const pythonProcess = spawn('python3', ['utils.py', inputFilePath, outputDir]);
+  const pythonProcess = spawn(pythonPath, ['utils.py', inputFilePath, outputDir]);
 
   pythonProcess.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -71,7 +84,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
       res.status(500).send('Error processing file');
     }
   });
-}); 
+});
 
 // Serve the output directory for downloads
 app.use('/output', express.static('output'));
