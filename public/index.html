@@ -2,44 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sheet Music Transcriber</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="container">
-        <h1>Upload a File</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <div class="drop-area" id="drop-area">
-                <p>Drag & drop a file here or click to select a file</p>
-                <input type="file" id="fileInput" name="file" required>
+
+<section id="contact-1333">
+    <div class="cs-container">
+        <!-- File Upload Section -->
+        <div class="cs-content file-upload">
+            <span class="cs-topper">File Upload</span>
+            <h2 class="cs-title">Upload your File</h2>
+            <div class="drag-area">
+                <div class="icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <span class="header">Drag & Drop</span>
+                <span class="header">or <span class="button">browse</span></span>
+                <input type="file" hidden />
+                <span class="support">Supports: JPEG, JPG, PNG</span>
             </div>
-            <button type="submit">Upload</button>
-        </form>
-        <div class="message" id="message"></div>
-        <div class="download-buttons" id="downloadButtons" style="display: none;">
-            <button id="downloadMidi" class="download-button">Download MIDI</button>
-            <button id="downloadMxl" class="download-button">Download MusicXML</button>
+            <div>
+                <button class="cs-button-solid download">Download</button>
+            </div>
         </div>
-        <!-- About our service section -->
-        <section class="about-service">
-            <h2>About our service</h2>
-            <div class="service-description">
-                <div class="service-item">
-                    <h3>How to use:</h3>
-                    <p>Drag your file onto the page and click upload. All services are free and work online, you do not need to install anything on your computer.</p>
-                </div>
-                <div class="service-item">
-                    <h3>You do not need to worry about file security.</h3>
-                    <p>Your downloaded files will be deleted immediately after conversion, and converted files will be deleted after you exit the site. All files are protected from access by third parties, no one except you can access them.</p>
-                </div>
-                <div class="service-item">
-                    <h3>PDF converter for all platforms</h3>
-                    <p>[URL] works in all browsers and on all platforms. You can convert, connect, rotate, split PDF files without the need to download and install programs.</p>
-                </div>
-            </div>
-        </section>
+        
+        <!-- FAQ Section -->
+        <div class="cs-content faq">
+            <span class="cs-topper">Asked Questions</span>
+            <h2 class="cs-title">Frequently Asked Questions</h2>
+            <ul class="cs-faq-group">
+                <li class="cs-faq-item active">
+                    <button class="cs-button">
+                        <span class="cs-button-text">What is the best way to start investing?</span>
+                    </button>
+                    <p class="cs-item-p">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">What are the tax implications of investing in the stock market?</span>
+                    </button>
+                    <p class="cs-item-p">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">How can I improve my credit score?</span>
+                    </button>
+                    <p class="cs-item-p">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">What is the difference between a traditional IRA and a Roth IRA?</span>
+                    </button>
+                    <p class="cs-item-p">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">How can I reduce my tax liability as a self-employed individual?</span>
+                    </button>
+                    <p class="cs-item-p">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit convallis nunc neque, bibendum pulvinar vitae commodo velit. Proin diam tortor sed malesuada nunc, habitant. Dignissim ipsum porta enim, magna urna, quam.
+                    </p>
+                </li>
+            </ul>
+        </div>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+</section>
+
+<script src="script.js"></script>
 </body>
 </html>

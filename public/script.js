@@ -3,6 +3,14 @@ const socket = io();
 const dropArea = document.getElementById('dropArea');
 const fileInput = document.getElementById('fileInput');
 
+const faqItems = Array.from(document.querySelectorAll('.cs-faq-item'));
+        for (const item of faqItems) {
+            const onClick = () => {
+            item.classList.toggle('active')
+        }
+        item.addEventListener('click', onClick)
+        }
+
 dropArea.addEventListener('dragover', (event) => {
     event.preventDefault();
     event.stopPropagation();

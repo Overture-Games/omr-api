@@ -1,41 +1,129 @@
-/* Import Inter font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+:root {
+    --primary: #ff6a3e;
+    --primaryLight: #ffba43;
+    --secondary: #ffba43;
+    --secondaryLight: #ffba43;
+    --headerColor: #1a1a1a;
+    --bodyTextColor: #4e4b66;
+    --bodyTextColorWhite: #fafbfc;
+    --topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
+    --headerFontSize: clamp(1.9375rem, 3.9vw, 3.0625rem);
+    --bodyFontSize: 1rem;
+    --sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
+}
 
-/* Basic resets */
-body, html {
+body {
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
-    height: 100%;
     background-color: #e0f7fa;
 }
 
-/* Container to fill the whole screen */
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 40px; /* Increase padding here */
+.faq {
+    width: 45vw; /* Ensure it fits side by side with the file upload section */
+}
+
+.file-upload {
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    width: 90%;
+    padding: 20px;
+    width: 45vw; /* Ensure it fits side by side with the FAQ section */
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+.cs-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* Ensure items do not wrap to the next line */
+    gap: clamp(3rem, 6vw, 5rem);
+    padding: var(--sectionPadding);
+    max-width: 80rem;
     margin: auto;
+    position: relative;
+}
+
+.cs-content {
+    text-align: left;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.cs-topper {
+    font-size: var(--topperFontSize);
+    line-height: 1.2em;
+    text-transform: uppercase;
+    text-align: inherit;
+    letter-spacing: .1em;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.cs-title {
+    font-size: var(--headerFontSize);
+    font-weight: 900;
+    line-height: 1.2em;
+    text-align: inherit;
+    max-width: 43.75rem;
+    margin: 0 0 1rem 0;
+    color: var(--headerColor);
+    position: relative;
+}
+
+.cs-text {
+    font-size: var(--bodyFontSize);
+    line-height: 1.5em;
+    text-align: inherit;
+    width: 100%;
+    max-width: 40.625rem;
+    margin: 0;
+    color: var(--bodyTextColor);
 }
 
 /* Form styling */
-.drop-area {
+.drag-area {
     border: 2px dashed #ccc;
     padding: 20px;
     text-align: center;
     transition: border-color 0.3s;
+    background-color: #f7f7f7;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-.drop-area.dragover {
-    border-color: #00796b;
+.drag-area.dragover {
+    border-color: var(--primary);
+}
+
+.drag-area .icon {
+    font-size: 48px;
+    color: #ccc;
+}
+
+.drag-area .header {
+    font-size: var(--bodyFontSize);
+    color: var(--headerColor);
+    margin-top: 10px;
+}
+
+.drag-area .button {
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.drag-area .support {
+    display: block;
+    margin-top: 10px;
+    font-size: var(--bodyFontSize);
+    color: var(--bodyTextColor);
 }
 
 input[type="file"] {
@@ -46,8 +134,8 @@ input[type="file"] {
     border-radius: 4px;
 }
 
-button {
-    background-color: #00796b;
+.cs-button-solid {
+    background-color: var(--primary);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -58,98 +146,128 @@ button {
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
-button:hover {
-    background-color: #004d40;
+.cs-button-solid:hover {
+    background-color: var(--primaryLight);
 }
 
-/* Message styling */
-.message {
-    margin-top: 20px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    color: #00796b;
-}
-
-/* Download buttons styling */
-.download-buttons {
-    margin-top: 20px;
+/* FAQ styling */
+.cs-faq-group {
+    padding: 0;
+    margin: 0;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
-.download-button {
-    background-color: #00796b;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    margin: 10px auto;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-.download-button:hover {
-    background-color: #004d40;
-}
-
-/* About service section */
-.about-service {
-    margin-top: 40px;
+.cs-faq-item {
+    list-style: none;
     width: 100%;
-    text-align: center;
+    border-bottom: 1px solid #e8e8e8;
+    transition: border-bottom 0.3s;
 }
 
-.about-service h2 {
-    font-size: 28px;
-    font-weight: bold;
-    color: #00796b;
-    margin-bottom: 20px;
-    position: relative;
+.cs-faq-item.active {
+    border-color: var(--primary);
 }
 
-.about-service h2::after {
-    content: '';
-    width: 50px;
-    height: 4px;
-    background-color: #e53935;
-    display: block;
-    margin: 10px auto 0;
+.cs-faq-item.active .cs-button {
+    color: var(--primary);
 }
 
-.service-description {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+.cs-faq-item.active .cs-button:before {
+    background-color: var(--primary);
+    transform: rotate(315deg);
 }
 
-.service-item {
-    flex: 1 1 calc(33% - 20px);
-    box-sizing: border-box;
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.cs-faq-item.active .cs-button:after {
+    background-color: var(--primary);
+    transform: rotate(-315deg);
+}
+
+.cs-faq-item.active .cs-item-p {
+    height: auto;
+    padding: 0 clamp(1rem, 2vw, 1.5rem) clamp(1.25rem, 2vw, 1.5rem) 0;
+    opacity: 1;
+}
+
+.cs-button {
+    font-size: 1rem;
+    line-height: 1.2em;
     text-align: left;
-}
-
-.service-item h3 {
-    font-size: 20px;
     font-weight: bold;
-    color: #00796b;
-    margin-bottom: 10px;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    padding-left: 0;
+    border: none;
+    background: transparent;
+    color: var(--headerColor);
+    display: block;
+    width: 100%;
+    position: relative;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.service-item p {
-    font-size: 14px;
-    color: #333;
-    line-height: 1.6;
+.cs-button:hover {
+    cursor: pointer;
+}
+
+.cs-button:before,
+.cs-button:after {
+    content: "";
+    width: 0.5rem;
+    height: 0.125rem;
+    background-color: var(--headerColor);
+    opacity: 1;
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    top: 45%;
+    right: 1.5rem;
+    transition: transform 0.5s;
+}
+
+.cs-button:before {
+    transform: rotate(45deg);
+    transform-origin: left center;
+}
+
+.cs-button:after {
+    right: 1.3125rem;
+    transform: rotate(-45deg);
+    transform-origin: right center;
+}
+
+.cs-button-text {
+    width: 80%;
+    display: block;
+}
+
+.cs-item-p {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    line-height: 1.5em;
+    width: 90%;
+    height: 0;
+    margin: 0;
+    padding: 0 clamp(1rem, 2vw, 1.5rem);
+    opacity: 0;
+    color: var(--bodyTextColor);
+    overflow: hidden;
+    transition: opacity 0.3s, padding-bottom 0.3s;
+}
+
+@media only screen and (min-width: 64rem) {
+    .cs-container {
+        max-width: 80rem;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .cs-content {
+        width: 45vw;
+    }
+    .cs-submit {
+        width: auto;
+    }
 }
