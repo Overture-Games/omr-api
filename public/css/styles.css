@@ -16,50 +16,14 @@ body, html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-height: 90%;
+    height: 100%;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 40px; /* Increase padding here */
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    max-width: 90%;
+    width: 90%;
     margin: auto;
-}
-
-/* Header styling */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.header-title {
-    font-size: 24px;
-    font-weight: bold;
-    font-family: 'Inter', sans-serif;
-    color: #00796b;
-}
-
-.header-links {
-    display: flex;
-    gap: 20px;
-}
-
-.header-link {
-    text-decoration: none;
-    color: #00796b;
-    font-size: 16px;
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.header-link:hover {
-    color: #004d40;
 }
 
 /* Form styling */
