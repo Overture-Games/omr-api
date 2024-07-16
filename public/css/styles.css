@@ -28,8 +28,7 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 20px;
-    width: 100%; /* Ensure it fits side by side with the FAQ section */
-    max-width: 100%;
+    width: 45vw; /* Ensure it fits side by side with the FAQ section */
 }
 
 *, *:before, *:after {
@@ -45,7 +44,6 @@ body {
     max-width: 80rem;
     margin: auto;
     position: relative;
-    flex-direction: column; /* Ensure it stacks vertically on smaller screens */
 }
 
 .cs-content {
@@ -182,6 +180,7 @@ input[type="file"] {
     border-radius: 4px;
     transition: background-color 0.3s;
     margin-top: 10px;
+    width: 100%;
 }
 
 .cs-button-solid:hover {
@@ -202,134 +201,24 @@ input[type="file"] {
     list-style: none;
     width: 100%;
     border-bottom: 1px solid #e8e8e8;
-    transition: border-bottom 0.3s;
+    padding: clamp(1rem, 2vw, 1.5rem) 0; /* Add padding for spacing */
 }
 
-.cs-faq-item.active {
-    border-color: var(--primary);
-}
-
-.cs-faq-item.active .cs-button {
-    color: var(--primary);
-}
-
-.cs-faq-item.active .cs-button:before {
-    background-color: var(--primary);
-    transform: rotate(315deg);
-}
-
-.cs-faq-item.active .cs-button:after {
-    background-color: var(--primary);
-    transform: rotate(-315deg);
-}
-
-.cs-faq-item.active .cs-item-p {
-    height: auto;
-    padding: 0 clamp(1rem, 2vw, 1.5rem) clamp(1.25rem, 2vw, 1.5rem) 0;
-    opacity: 1;
-}
-
-.cs-button {
+.cs-button-text {
     font-size: 1rem;
     line-height: 1.2em;
     text-align: left;
     font-weight: bold;
-    padding: clamp(1rem, 2vw, 1.5rem);
-    padding-left: 0;
-    border: none;
-    background: transparent;
-    color: var(--headerColor);
-    display: block;
+    color: var(--primary);
     width: 100%;
-    position: relative;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.cs-button:hover {
-    cursor: pointer;
-}
-
-.cs-button:before,
-.cs-button:after {
-    content: "";
-    width: 0.5rem;
-    height: 0.125rem;
-    background-color: var(--headerColor);
-    opacity: 1;
-    border-radius: 50%;
-    position: absolute;
-    display: block;
-    top: 45%;
-    right: 1.5rem;
-    transition: transform 0.5s;
-}
-
-.cs-button:before {
-    transform: rotate(45deg);
-    transform-origin: left center;
-}
-
-.cs-button:after {
-    right: 1.3125rem;
-    transform: rotate(-45deg);
-    transform-origin: right center;
-}
-
-.cs-button-text {
-    width: 80%;
-    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .cs-item-p {
     font-size: clamp(0.875rem, 1.5vw, 1rem);
     line-height: 1.5em;
-    width: 90%;
-    height: 0;
+    width: 100%;
     margin: 0;
     padding: 0 clamp(1rem, 2vw, 1.5rem);
-    opacity: 0;
     color: var(--bodyTextColor);
-    overflow: hidden;
-    transition: opacity 0.3s, padding-bottom 0.3s;
-}
-
-/* Add this to your existing CSS */
-
-/* Loading bar styling */
-.loading-bar {
-    width: 100%;
-    background-color: #f3f3f3;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-top: 20px;
-}
-
-.loading-bar-inner {
-    width: 0;
-    height: 20px;
-    background-color: #4CAF50;
-    transition: width 10s linear;
-}
-
-#downloadButtons {
-    display: none;
-}
-
-#message {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #00796b;
-}
-
-
-@media only screen and (min-width: 64rem) {
-    .cs-container {
-        flex-direction: row;
-    }
-    .cs-content {
-        width: 45vw;
-    }
-    .cs-submit {
-        width: auto;
-    }
 }

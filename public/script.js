@@ -2,7 +2,6 @@ const socket = io();
 
 const dropArea = document.getElementById('drop-area');
 const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
 const processButton = document.getElementById('processButton');
 const loadingBar = document.getElementById('loadingBar');
 const loadingBarInner = document.querySelector('.loading-bar-inner');
@@ -26,9 +25,6 @@ const messageElement = document.getElementById('message');
 
 // Handle dropped files
 dropArea.addEventListener('drop', handleDrop, false);
-
-// Handle file input change
-fileInput.addEventListener('change', handleFiles, false);
 
 // Prevent default behavior for drag events
 function preventDefaults(e) {
@@ -55,20 +51,7 @@ function handleDrop(e) {
 
 // Handle selected files
 function handleFiles(files) {
-    files = [...files];
-    files.forEach(previewFile);
     fileInput.files = files; // Update file input files
-}
-
-// Preview file
-function previewFile(file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-        const img = document.createElement('img');
-        img.src = reader.result;
-        preview.appendChild(img);
-    }
 }
 
 // Trigger file input click on drop area click
