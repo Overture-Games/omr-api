@@ -59,7 +59,7 @@ dropArea.addEventListener('click', () => {
     fileInput.click();
 });
 
-processButton.addEventListener('click', () => {
+processButton.addEventListener('click', async () => {
     if (fileInput.files.length === 0) {
         messageElement.textContent = 'Please select a file first!';
         messageElement.style.color = 'red';
@@ -67,24 +67,15 @@ processButton.addEventListener('click', () => {
     }
 
     loadingBar.style.display = 'block';
-    loadingBarInner.style.width = '100%';
-
+    loadingBarInner.style.width = '0';
     setTimeout(() => {
-        loadingBar.style.display = 'none';
-        downloadButtons.style.display = 'block';
-        messageElement.textContent = 'Processing complete!';
-        messageElement.style.color = 'green';
-    }, 10000); // Simulate 10 seconds processing time
-});
-
-document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+        loadingBarInner.style.width = '100%';
+    }, 100);
 
     const formData = new FormData();
-    const files = fileInput.files;
-    if (files.length > 0) {
-        formData.append('file', files[0]);
+    formData.append('file', fileInput.files[0]);
 
+    try {
         const response = await fetch('/upload', {
             method: 'POST',
             body: formData,
@@ -94,6 +85,11 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
             const data = await response.json();
             messageElement.textContent = 'File uploaded successfully!';
             messageElement.style.color = 'green';
+
+            setTimeout(() => {
+                loadingBar.style.display = 'none';
+                downloadButtons.style.display = 'block';
+            }, 15000); // Adjust the simulated processing time here to match the CSS transition duration
 
             document.getElementById('downloadMidi').onclick = () => {
                 window.location.href = data.midiFile;
@@ -113,5 +109,10 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
             messageElement.textContent = 'File upload failed!';
             messageElement.style.color = 'red';
         }
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        messageElement.textContent = 'Error uploading file!';
+        messageElement.style.color = 'red';
     }
 });
+

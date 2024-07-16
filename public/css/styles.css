@@ -222,3 +222,32 @@ input[type="file"] {
     padding: 0 clamp(1rem, 2vw, 1.5rem);
     color: var(--bodyTextColor);
 }
+
+.loading-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 25px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.loading-bar-inner {
+    height: 20px;
+    width: 0;
+    background-color: #4CAF50;
+    border-radius: 25px;
+    transition: width 15s;
+}
+
+#downloadButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensure it spans the full width of the container */
+    margin-top: 20px;
+}
+
+#downloadButtons .download {
+    width: 50%; /* Adjust the width to fit two buttons side by side with some spacing */
+    padding: 2%; /* Add some padding to the buttons */
+    margin: 0;  /* Remove the top margin */
+}
