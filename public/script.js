@@ -3,6 +3,11 @@ const socket = io();
 const dropArea = document.getElementById('drop-area');
 const fileInput = document.getElementById('fileInput');
 const preview = document.getElementById('preview');
+const processButton = document.getElementById('processButton');
+const loadingBar = document.getElementById('loadingBar');
+const loadingBarInner = document.querySelector('.loading-bar-inner');
+const downloadButtons = document.getElementById('downloadButtons');
+const messageElement = document.getElementById('message');
 
 // Prevent default drag behaviors
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -52,7 +57,7 @@ function handleDrop(e) {
 function handleFiles(files) {
     files = [...files];
     files.forEach(previewFile);
-    fileInput.files = files.length ? files[0] : null;  // Set the first file to the input
+    fileInput.files = files; // Update file input files
 }
 
 // Preview file
@@ -71,6 +76,24 @@ dropArea.addEventListener('click', () => {
     fileInput.click();
 });
 
+processButton.addEventListener('click', () => {
+    if (fileInput.files.length === 0) {
+        messageElement.textContent = 'Please select a file first!';
+        messageElement.style.color = 'red';
+        return;
+    }
+
+    loadingBar.style.display = 'block';
+    loadingBarInner.style.width = '100%';
+
+    setTimeout(() => {
+        loadingBar.style.display = 'none';
+        downloadButtons.style.display = 'block';
+        messageElement.textContent = 'Processing complete!';
+        messageElement.style.color = 'green';
+    }, 10000); // Simulate 10 seconds processing time
+});
+
 document.getElementById('uploadForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
@@ -84,14 +107,10 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
             body: formData,
         });
 
-        const messageElement = document.getElementById('message');
-        const downloadButtonsElement = document.getElementById('downloadButtons');
-        
         if (response.ok) {
             const data = await response.json();
             messageElement.textContent = 'File uploaded successfully!';
             messageElement.style.color = 'green';
-            downloadButtonsElement.style.display = 'block';
 
             document.getElementById('downloadMidi').onclick = () => {
                 window.location.href = data.midiFile;
@@ -110,7 +129,6 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
         } else {
             messageElement.textContent = 'File upload failed!';
             messageElement.style.color = 'red';
-            downloadButtonsElement.style.display = 'none';
         }
     }
 });

@@ -293,6 +293,35 @@ input[type="file"] {
     transition: opacity 0.3s, padding-bottom 0.3s;
 }
 
+/* Add this to your existing CSS */
+
+/* Loading bar styling */
+.loading-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.loading-bar-inner {
+    width: 0;
+    height: 20px;
+    background-color: #4CAF50;
+    transition: width 10s linear;
+}
+
+#downloadButtons {
+    display: none;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #00796b;
+}
+
+
 @media only screen and (min-width: 64rem) {
     .cs-container {
         flex-direction: row;

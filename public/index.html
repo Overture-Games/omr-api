@@ -15,21 +15,31 @@
             <!-- File Upload Section -->
             <div class="cs-content file-upload">
                 <span class="cs-topper">File Upload</span>
-                <h2 class="cs-title">Sheet Music Transcriber</h2>
-                <div class="drag-area">
+                <h2 class="cs-title">Upload your File</h2>
+                <div class="drag-area" id="drop-area">
                     <div class="icon">
                         <i class="fas fa-images"></i>
                     </div>
                     <span class="header">Drag & Drop</span>
                     <span class="header">or <span class="button">browse</span></span>
-                    <input type="file" hidden />
-                    <span class="support">Supports: JPEG, JPG, PNG, HEIC, PDF</span>
+                    <input type="file" id="fileInput" hidden />
+                    <span class="support">Supports: JPEG, JPG, PNG</span>
                 </div>
+                <div id="preview"></div>
+                <button class="cs-button-solid" id="processButton">Begin Processing</button>
+                <div id="loadingBar" class="loading-bar" style="display: none;">
+                    <div class="loading-bar-inner"></div>
+                </div>
+                <div id="downloadButtons" style="display: none;">
+                    <button class="cs-button-solid download" id="downloadMidi">Download MIDI</button>
+                    <button class="cs-button-solid download" id="downloadMxl">Download MusicXML</button>
+                </div>
+                <div class="message" id="message"></div>
             </div>
             
             <!-- FAQ Section -->
             <div class="cs-content faq">
-                <span class="cs-topper">Asked Questions</span>
+                <span class="cs-topper">Technologies and Processes</span>
                 <h2 class="cs-title">Frequently Asked Questions</h2>
                 <ul class="cs-faq-group">
                     <li class="cs-faq-item active">
