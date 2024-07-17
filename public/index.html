@@ -14,7 +14,7 @@
         <!-- File Upload Section -->
         <div class="cs-content file-upload">
             <span class="cs-topper">File Upload</span>
-            <h2 class="cs-title">Sheet Music Transcriber</h2>
+            <h2 class="cs-title">Sheet Music to MIDI/MusicXML Converter</h2>
             <div class="drag-area" id="drop-area">
                 <div class="icon">
                     <i class="fas fa-images"></i>
@@ -29,9 +29,13 @@
                 <div class="loading-bar-inner"></div>
             </div>
             <div id="downloadButtons" style="display: none;">
-                <button class="cs-button-solid" id="downloadMidi">Download MIDI</button>
-                <button class="cs-button-solid" id="downloadMxl">Download MusicXML</button>
+                <div class="download-buttons-container">
+                    <button class="cs-button-solid" id="downloadMidi">Download MIDI</button>
+                    <button class="cs-button-solid" id="downloadMxl">Download MusicXML</button>
+                </div>
             </div>
+                     
+            
             <div class="message" id="message"></div>
         </div>
         

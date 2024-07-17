@@ -20,7 +20,6 @@ body {
 }
 
 *, *:before, *:after {
-    /* prevents padding from affecting height and width */
     box-sizing: border-box;
 }
 
@@ -29,7 +28,8 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 20px;
-    width: 45vw; /* Ensure it fits side by side with the FAQ section */
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .cs-topper {
@@ -49,8 +49,8 @@ body {
     font-weight: 900;
     line-height: 1.2em;
     text-align: inherit;
-    max-width: 43.75rem;
-    margin: 0 0 1rem 0;
+    width: 100%;
+    margin: 0 0 1rem 0; 
     color: var(--headerColor);
     position: relative;
 }
@@ -162,6 +162,28 @@ input[type="file"] {
     transition: width 25s;
 }
 
+#downloadButtons {
+    display: none; /* Ensure buttons are hidden by default */
+    width: 100%; /* Ensure the container takes up the full width */
+}
+
+#downloadButtons .cs-button-solid {
+    flex: 1; /* Allow buttons to grow equally in the container */
+    width: 50%; /* Each button takes up half the width */
+}
+
+
+#processButton {
+    margin-bottom: 10px; /* Adjust as needed for spacing */
+}
+
+.download-buttons-container {
+    display: flex;
+    gap: 10px; /* Space between the buttons */
+    margin-top: 20px; /* Space between the container and the process button */
+    width: 100%; /* Ensure the container takes up the full width */
+}
+
 /* Mobile - 360px */
 @media only screen and (min-width: 0rem) {
     #contact-1333 {
@@ -192,10 +214,6 @@ input[type="file"] {
         align-items: flex-start;
     }
 
-    #contact-1333 .cs-title {
-        max-width: 23ch;
-        margin: 0 0 1.75rem 0;
-    }
     #contact-1333 .cs-form {
         width: 100%;
         max-width: 40.625rem;
@@ -270,7 +288,7 @@ input[type="file"] {
         position: relative;
         z-index: 1;
         box-sizing: border-box;
-        transition: color 0.3s;
+        transition: color 1s;
     }
     #contact-1333 .cs-button-solid:before {
         content: "";
@@ -354,7 +372,6 @@ input[type="file"] {
         cursor: pointer;
     }
     #contact-1333 .cs-button:before {
-        /* left line */
         content: "";
         width: 0.5rem;
         height: 0.125rem;
@@ -366,12 +383,10 @@ input[type="file"] {
         top: 45%;
         right: 1.5rem;
         transform: rotate(45deg);
-        /* animate the transform from the left side of the x axis, and the center of the y */
         transform-origin: left center;
         transition: transform 0.5s;
     }
     #contact-1333 .cs-button:after {
-        /* right line */
         content: "";
         width: 0.5rem;
         height: 0.125rem;
@@ -383,7 +398,6 @@ input[type="file"] {
         top: 45%;
         right: 1.3125rem;
         transform: rotate(-45deg);
-        /* animate the transform from the right side of the x axis, and the center of the y */
         transform-origin: right center;
         transition: transform 0.5s;
     }
@@ -392,17 +406,14 @@ input[type="file"] {
         display: block;
     }
     #contact-1333 .cs-item-p {
-        /* 14px - 16px */
         font-size: clamp(0.875rem, 1.5vw, 1rem);
         line-height: 1.5em;
         width: 90%;
         height: 0;
         margin: 0;
-        /* 16px - 24px */
         padding: 0 clamp(1rem, 2vw, 1.5rem);
         opacity: 0;
         color: var(--bodyTextColor);
-        /* clips the text so it doesn't show up */
         overflow: hidden;
         transition:
             opacity 0.3s,
@@ -412,8 +423,7 @@ input[type="file"] {
 /* Desktop - 1024px */
 @media only screen and (min-width: 64rem) {
     #contact-1333 .cs-container {
-        max-width: 80rem;
-        flex-direction: row;
+        max-width: 70rem;
         justify-content: space-between;
     }
     #contact-1333 .cs-form {

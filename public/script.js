@@ -102,8 +102,8 @@ processButton.addEventListener('click', async () => {
 
             setTimeout(() => {
                 loadingBar.style.display = 'none';
-                downloadButtons.style.display = 'block';
-            }, 0); // Adjust the simulated processing time here to match the CSS transition duration
+                downloadButtons.style.display = 'flex'; /* Show buttons after processing */
+            });
 
             document.getElementById('downloadMidi').onclick = () => {
                 window.location.href = data.midiFile;
@@ -129,4 +129,3 @@ processButton.addEventListener('click', async () => {
         messageElement.style.color = 'red';
     }
 });
-
