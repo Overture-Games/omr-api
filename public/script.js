@@ -8,6 +8,22 @@ const loadingBarInner = document.querySelector('.loading-bar-inner');
 const downloadButtons = document.getElementById('downloadButtons');
 const messageElement = document.getElementById('message');
 
+// FAQ
+const faqItems = Array.from(document.querySelectorAll('.cs-faq-item'));
+for (const item of faqItems) {
+    const onClick = () => {
+        // Collapse other sections
+        faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+                otherItem.classList.remove('active');
+            }
+        });
+        // Toggle the clicked section
+        item.classList.toggle('active');
+    }
+    item.addEventListener('click', onClick);
+}
+
 // Prevent default drag behaviors
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false);
@@ -83,13 +99,11 @@ processButton.addEventListener('click', async () => {
 
         if (response.ok) {
             const data = await response.json();
-            messageElement.textContent = 'File uploaded successfully!';
-            messageElement.style.color = 'green';
 
             setTimeout(() => {
                 loadingBar.style.display = 'none';
                 downloadButtons.style.display = 'block';
-            }, 15000); // Adjust the simulated processing time here to match the CSS transition duration
+            }, 0); // Adjust the simulated processing time here to match the CSS transition duration
 
             document.getElementById('downloadMidi').onclick = () => {
                 window.location.href = data.midiFile;

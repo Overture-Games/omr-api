@@ -14,7 +14,7 @@
         <!-- File Upload Section -->
         <div class="cs-content file-upload">
             <span class="cs-topper">File Upload</span>
-            <h2 class="cs-title">Upload your File</h2>
+            <h2 class="cs-title">Sheet Music Transcriber</h2>
             <div class="drag-area" id="drop-area">
                 <div class="icon">
                     <i class="fas fa-images"></i>
@@ -29,33 +29,66 @@
                 <div class="loading-bar-inner"></div>
             </div>
             <div id="downloadButtons" style="display: none;">
-                <button class="cs-button-solid download" id="downloadMidi">Download MIDI</button>
-                <button class="cs-button-solid download" id="downloadMxl">Download MusicXML</button>
+                <button class="cs-button-solid" id="downloadMidi">Download MIDI</button>
+                <button class="cs-button-solid" id="downloadMxl">Download MusicXML</button>
             </div>
             <div class="message" id="message"></div>
         </div>
         
         <!-- FAQ Section -->
-        <div class="cs-content faq">
-            <span class="cs-topper">Technologies and Processes</span>
+        <div class="cs-content">
+            <span class="cs-topper">Technology and Processes</span>
             <h2 class="cs-title">Frequently Asked Questions</h2>
             <ul class="cs-faq-group">
-                <li class="cs-faq-item">
-                    <span class="cs-button-text">What does this website do?</span>
+                <!-- Active class added as default -->
+                <li class="cs-faq-item active">
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            How does the Sheet Music Transcriber work?
+                        </span>
+                    </button>
                     <p class="cs-item-p">
-                        This website is a sheet music transcriber. It takes an image of sheet music and converts it into a digital, computer-readable format.
+                        The Sheet Music Transcriber uses advanced algorithms to analyze uploaded sheet music images or PDFs and convert them into digital formats such as MIDI and MusicXML.
                     </p>
                 </li>
                 <li class="cs-faq-item">
-                    <span class="cs-button-text">Are my files safe?</span>
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            What file formats are supported for sheet music uploads?
+                        </span>
+                    </button>
                     <p class="cs-item-p">
-                        Yes, your files are safe. We do not store any of your files on our servers. All files--uploaded and generated--are deleted when the session ends.
+                        The Sheet Music Transcriber supports JPEG, JPG, PNG, HEIC, and PDF file formats for sheet music uploads.
                     </p>
                 </li>
                 <li class="cs-faq-item">
-                    <span class="cs-button-text">What technologies are used?</span>
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            How long does it take to process the sheet music?
+                        </span>
+                    </button>
                     <p class="cs-item-p">
-                        This website is built using HTML, CSS, and JavaScript, with the backend is built using Node.js and Express.js, with the server being hosted on an AWS EC2 instance. As for the actual Optical Music Recognition model, this website uses Audiveris, an open-source OMR engine.
+                        The processing time depends on the complexity of the sheet music and the server load. Generally, it takes a few seconds to a few minutes to transcribe the sheet music.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            Can I download the transcribed sheet music in different formats?
+                        </span>
+                    </button>
+                    <p class="cs-item-p">
+                        Yes, once the sheet music is transcribed, you can download it in MIDI and MusicXML formats for further editing or playback.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            Is the Sheet Music Transcriber free to use?
+                        </span>
+                    </button>
+                    <p class="cs-item-p">
+                        Yes, the Sheet Music Transcriber is completely free to use. Enjoy transcribing your sheet music hassle-free!
                     </p>
                 </li>
             </ul>
