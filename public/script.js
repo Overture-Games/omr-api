@@ -1,3 +1,51 @@
+// Prevent default behavior for drag events
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+// Highlight drop area
+function highlight(e) {
+    dropArea.classList.add('dragover');
+}
+
+// Unhighlight drop area
+function unhighlight(e) {
+    dropArea.classList.remove('dragover');
+}
+
+// Handle dropped files
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    handleFiles(files);
+}
+
+// Handle selected files
+function handleFiles(files) {
+    const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/svg+xml', 'application/pdf'];
+    const unsupportedFiles = Array.from(files).filter(file => !supportedFormats.includes(file.type));
+
+    if (unsupportedFiles.length > 0) {
+        showErrorMessage('Unsupported file format! Please upload JPEG, JPG, PNG, HEIC, SVG, or PDF files.');
+        return;
+    }
+
+    fileInput.files = files; // Update file input files
+}
+
+// Show error message
+function showErrorMessage(message) {
+    const errorBanner = document.createElement('div');
+    errorBanner.className = 'error-banner';
+    errorBanner.textContent = message;
+    dropArea.appendChild(errorBanner);
+
+    setTimeout(() => {
+        dropArea.removeChild(errorBanner);
+    }, 3000);
+}
+
 const socket = io();
 
 const dropArea = document.getElementById('drop-area');
@@ -41,34 +89,6 @@ for (const item of faqItems) {
 
 // Handle dropped files
 dropArea.addEventListener('drop', handleDrop, false);
-
-// Prevent default behavior for drag events
-function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-}
-
-// Highlight drop area
-function highlight(e) {
-    dropArea.classList.add('dragover');
-}
-
-// Unhighlight drop area
-function unhighlight(e) {
-    dropArea.classList.remove('dragover');
-}
-
-// Handle dropped files
-function handleDrop(e) {
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    handleFiles(files);
-}
-
-// Handle selected files
-function handleFiles(files) {
-    fileInput.files = files; // Update file input files
-}
 
 // Trigger file input click on drop area click
 dropArea.addEventListener('click', () => {

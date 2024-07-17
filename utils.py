@@ -4,6 +4,7 @@ import logging
 from PIL import Image
 from music21 import converter
 import sys
+from cairosvg import svg2png
 
 # Setup logging
 logging.basicConfig(level=logging.DEBUG)
@@ -27,6 +28,15 @@ def convert_heic_to_png(heic_path, png_path):
         logging.debug(f'Converted HEIC to PNG: {png_path}')
     except Exception as e:
         logging.error(f'Error converting HEIC to PNG: {str(e)}')
+        raise
+    
+def convert_svg_to_png(svg_path, png_path):
+    """Convert SVG image to PNG."""
+    try:
+        svg2png(url=svg_path, write_to=png_path)
+        logging.debug(f'Converted SVG to PNG: {png_path}')
+    except Exception as e:
+        logging.error(f'Error converting SVG to PNG: {str(e)}')
         raise
 
 def generate_midi_from_mxl(input_filepath, output_dir):
@@ -56,6 +66,11 @@ def run_audiveris(input_filepath, output_dir):
             png_filename = f"{os.path.splitext(os.path.basename(input_filepath))[0]}.png"
             png_filepath = os.path.join(output_dir, png_filename)
             convert_heic_to_png(input_filepath, png_filepath)
+            input_filepath = png_filepath
+        elif file_ext == 'svg':
+            png_filename = f"{os.path.splitext(os.path.basename(input_filepath))[0]}.png"
+            png_filepath = os.path.join(output_dir, png_filename)
+            convert_svg_to_png(input_filepath, png_filepath)
             input_filepath = png_filepath
 
         # Run Audiveris command
