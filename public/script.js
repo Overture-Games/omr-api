@@ -43,10 +43,8 @@ function showErrorMessage(message) {
 
     setTimeout(() => {
         dropArea.removeChild(errorBanner);
-    }, 3000);
+    }, 4000);
 }
-
-const socket = io();
 
 const dropArea = document.getElementById('drop-area');
 const fileInput = document.getElementById('fileInput');
@@ -95,10 +93,14 @@ dropArea.addEventListener('click', () => {
     fileInput.click();
 });
 
+// Handle file input change
+fileInput.addEventListener('change', (e) => {
+    handleFiles(fileInput.files);
+});
+
 processButton.addEventListener('click', async () => {
     if (fileInput.files.length === 0) {
-        messageElement.textContent = 'Please select a file first!';
-        messageElement.style.color = 'red';
+        showErrorMessage('Please upload a file first!');
         return;
     }
 
