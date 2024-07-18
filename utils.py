@@ -2,9 +2,9 @@ import os
 import subprocess
 import logging
 from PIL import Image
-from music21 import converter
+from music21 import converter # type: ignore
 import sys
-from cairosvg import svg2png
+from cairosvg import svg2png # type: ignore
 
 # Setup logging
 logging.basicConfig(level=logging.DEBUG)
