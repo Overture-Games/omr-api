@@ -6,8 +6,14 @@ import { spawn } from 'child_process';
 import http from 'http';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -24,8 +30,8 @@ const ensureDirectoryExistence = (dir) => {
   }
 };
 
-ensureDirectoryExistence(path.join(path.resolve(), 'uploads'));
-ensureDirectoryExistence(path.join(path.resolve(), 'output'));
+ensureDirectoryExistence(path.join(__dirname, 'uploads'));
+ensureDirectoryExistence(path.join(__dirname, 'output'));
 
 // CORS Middleware
 app.use((req, res, next) => {
@@ -35,11 +41,11 @@ app.use((req, res, next) => {
 });
 
 // Serve static files from the 'public' directory
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Route for the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(path.resolve(), 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Combined Upload and Transcribe Endpoint
@@ -49,8 +55,8 @@ app.post('/upload', upload.single('file'), (req, res) => {
     return res.status(400).send('No file uploaded.');
   }
 
-  const inputFilePath = path.join(path.resolve(), 'uploads', req.file.filename);
-  const outputDir = path.join(path.resolve(), 'output');
+  const inputFilePath = path.join(__dirname, 'uploads', req.file.filename);
+  const outputDir = path.join(__dirname, 'output');
 
   console.log(`File received for transcription: ${inputFilePath}`);
 
@@ -87,18 +93,48 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 // Serve the output directory for downloads
-app.use('/output', express.static('output'));
+app.use('/output', express.static(path.join(__dirname, 'output')));
 
 // WebSocket connection
 io.on('connection', (socket) => {
-  console.log('User connected');
+  const userUuid = uuidv4();
+  socket.userUuid = userUuid;
+  const userDir = path.join(__dirname, 'uploads', userUuid);
+
+  // Ensure the user's directory exists
+  if (!fs.existsSync(userDir)) {
+    fs.mkdirSync(userDir);
+  }
+
+  console.log(`User connected: ${userUuid}`);
+
+  socket.on('fileUploaded', (filePath) => {
+    // Move the uploaded file to the user's directory
+    const fileName = path.basename(filePath);
+    const newFilePath = path.join(userDir, fileName);
+    fs.rename(filePath, newFilePath, (err) => {
+      if (err) {
+        console.error('Error moving file:', err);
+      } else {
+        console.log(`File moved to: ${newFilePath}`);
+      }
+    });
+  });
 
   socket.on('fileDownloaded', (data) => {
     console.log(`File downloaded: ${data.filePath}`);
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    console.log(`User disconnected: ${userUuid}`);
+    // Delete the user's directory and its contents
+    fs.rmdir(userDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error deleting user directory:', err);
+      } else {
+        console.log(`User directory deleted: ${userDir}`);
+      }
+    });
 
     // Clean up files in uploads and output
     ['uploads', 'output'].forEach((dir) => {
