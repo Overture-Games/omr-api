@@ -26,9 +26,12 @@ const upload = multer({ dest: 'uploads/' });
 
 const ensureDirectoryExistence = (dir) => {
   if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
+    fs.mkdirSync(dir, { recursive: true });
   }
 };
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 ensureDirectoryExistence(path.join(__dirname, 'uploads'));
 ensureDirectoryExistence(path.join(__dirname, 'output'));
@@ -39,9 +42,6 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Route for the root URL
 app.get('/', (req, res) => {
@@ -55,13 +55,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
     return res.status(400).send('No file uploaded.');
   }
 
-  const inputFilePath = path.join(__dirname, 'uploads', req.file.filename);
-  const outputDir = path.join(__dirname, 'output');
+  const userUuid = uuidv4();
+  const userUploadDir = path.join(__dirname, 'uploads', userUuid);
+  const userOutputDir = path.join(__dirname, 'output', userUuid);
+
+  ensureDirectoryExistence(userUploadDir);
+  ensureDirectoryExistence(userOutputDir);
+
+  const inputFilePath = path.join(userUploadDir, req.file.filename);
+
+  // Move the uploaded file to the user's directory
+  fs.renameSync(req.file.path, inputFilePath);
 
   console.log(`File received for transcription: ${inputFilePath}`);
 
   // Call the Python script to run Audiveris
-  const pythonProcess = spawn(pythonPath, ['utils.py', inputFilePath, outputDir]);
+  const pythonProcess = spawn(pythonPath, ['utils.py', inputFilePath, userOutputDir]);
 
   pythonProcess.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -76,16 +85,20 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
     if (code === 0) {
       const baseFilename = path.basename(req.file.filename, path.extname(req.file.filename));
-      const midiFilePath = path.join(outputDir, `${baseFilename}.mid`);
-      const mxlFilePath = path.join(outputDir, `${baseFilename}.mxl`);
+      const midiFilePath = path.join(userOutputDir, `${baseFilename}.mid`);
+      const mxlFilePath = path.join(userOutputDir, `${baseFilename}.mxl`);
 
       res.json({
-        midiFile: `/output/${baseFilename}.mid`,
-        mxlFile: `/output/${baseFilename}.mxl`
+        midiFile: `/output/${userUuid}/${baseFilename}.mid`,
+        mxlFile: `/output/${userUuid}/${baseFilename}.mxl`
       });
 
       // Optionally, delete the uploaded file after processing
-      fs.unlinkSync(inputFilePath);
+      fs.rm(inputFilePath, { force: true }, (err) => {
+        if (err) {
+          console.error('Error deleting file:', err);
+        }
+      });
     } else {
       res.status(500).send('Error processing file');
     }
@@ -102,9 +115,7 @@ io.on('connection', (socket) => {
   const userDir = path.join(__dirname, 'uploads', userUuid);
 
   // Ensure the user's directory exists
-  if (!fs.existsSync(userDir)) {
-    fs.mkdirSync(userDir);
-  }
+  ensureDirectoryExistence(userDir);
 
   console.log(`User connected: ${userUuid}`);
 
@@ -128,25 +139,22 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${userUuid}`);
     // Delete the user's directory and its contents
-    fs.rmdir(userDir, { recursive: true }, (err) => {
+    fs.rm(userDir, { recursive: true, force: true }, (err) => {
       if (err) {
         console.error('Error deleting user directory:', err);
       } else {
         console.log(`User directory deleted: ${userDir}`);
       }
     });
-
-    // Clean up files in uploads and output
-    ['uploads', 'output'].forEach((dir) => {
-      fs.readdir(dir, (err, files) => {
-        if (err) throw err;
-
-        for (const file of files) {
-          fs.unlink(path.join(dir, file), err => {
-            if (err) throw err;
-          });
-        }
-      });
+  
+    // Clean up files in the user's output directory
+    const userOutputDir = path.join(__dirname, 'output', userUuid);
+    fs.rm(userOutputDir, { recursive: true, force: true }, (err) => {
+      if (err) {
+        console.error('Error deleting user output directory:', err);
+      } else {
+        console.log(`User output directory deleted: ${userOutputDir}`);
+      }
     });
   });
 });
