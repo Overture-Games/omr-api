@@ -107,7 +107,7 @@ This project is licensed under the MIT License.
 ## package.json
 ```json
 {
-  "name": "omr-api",
+  "name": "backend",
   "version": "1.0.0",
   "description": "Backend server for file processing",
   "main": "server.js",
@@ -116,13 +116,24 @@ This project is licensed under the MIT License.
     "start": "node server.js"
   },
   "dependencies": {
+    "child_process": "^1.0.2",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fs": "^0.0.1-security",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.1",
-    "socket.io": "^4.7.5"
+    "path": "^0.12.7",
+    "socket.io": "^4.7.5",
+    "uuid": "^10.0.0",
+    "ws": "^8.18.0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^6.0.0",
+    "autoprefixer": "^10.4.19",
+    "cross-env": "^7.0.3"
+  }
 }
 ```
 
