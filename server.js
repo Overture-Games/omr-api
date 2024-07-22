@@ -1,5 +1,3 @@
-// This file contains the server-side code for the application.
-
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
@@ -26,8 +24,9 @@ const io = new Server(server);
 
 const upload = multer({ dest: 'uploads/' });
 
+// Ensure the directory exists
 const ensureDirectoryExistence = (dir) => {
-  if (!fs.existsSync(dir)){
+  if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 };
@@ -50,14 +49,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Combined Upload and Transcribe Endpoint
+// Handle file upload
 app.post('/upload', upload.single('file'), (req, res) => {
+  const userUuid = req.body.userUuid; // Extract userUuid from the request body
+  console.log("User UUID: %s\n", userUuid);
+
   if (!req.file) {
     console.error('No file uploaded.');
     return res.status(400).send('No file uploaded.');
   }
 
-  const userUuid = uuidv4();
   const userUploadDir = path.join(__dirname, 'uploads', userUuid);
   const userOutputDir = path.join(__dirname, 'output', userUuid);
 
@@ -67,7 +68,12 @@ app.post('/upload', upload.single('file'), (req, res) => {
   const inputFilePath = path.join(userUploadDir, req.file.filename);
 
   // Move the uploaded file to the user's directory
-  fs.renameSync(req.file.path, inputFilePath);
+  try {
+    fs.renameSync(req.file.path, inputFilePath);
+  } catch (err) {
+    console.error('Error moving file:', err);
+    return res.status(500).send('Error moving file');
+  }
 
   console.log(`File received for transcription: ${inputFilePath}`);
 
@@ -91,8 +97,8 @@ app.post('/upload', upload.single('file'), (req, res) => {
       const mxlFilePath = path.join(userOutputDir, `${userUuid}_${baseFilename}.mxl`);
 
       res.json({
-        midiFile: `/output/${userUuid}/${userUuid}_${baseFilename}.mid`,
-        mxlFile: `/output/${userUuid}/${userUuid}_${baseFilename}.mxl`
+        midiFile: `/output/${userUuid}/${baseFilename}.mid`,
+        mxlFile: `/output/${userUuid}/${baseFilename}.mxl`
       });
 
       // Optionally, delete the uploaded file after processing
@@ -114,6 +120,7 @@ app.use('/output', express.static(path.join(__dirname, 'output')));
 io.on('connection', (socket) => {
   const userUuid = uuidv4();
   socket.userUuid = userUuid;
+
   const userDir = path.join(__dirname, 'uploads', userUuid);
 
   // Ensure the user's directory exists
@@ -121,10 +128,14 @@ io.on('connection', (socket) => {
 
   console.log(`User connected: ${userUuid}`);
 
+  // Emit the userUuid to the client
+  socket.emit('userUuid', userUuid);
+
+  // Handle file upload event
   socket.on('fileUploaded', (filePath) => {
-    // Move the uploaded file to the user's directory
     const fileName = path.basename(filePath);
     const newFilePath = path.join(userDir, fileName);
+
     fs.rename(filePath, newFilePath, (err) => {
       if (err) {
         console.error('Error moving file:', err);
@@ -134,12 +145,15 @@ io.on('connection', (socket) => {
     });
   });
 
+  // Handle file download event
   socket.on('fileDownloaded', (data) => {
     console.log(`File downloaded: ${data.filePath}`);
   });
 
+  // Handle client disconnect
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${userUuid}`);
+
     // Delete the user's directory and its contents
     fs.rm(userDir, { recursive: true, force: true }, (err) => {
       if (err) {
@@ -148,7 +162,7 @@ io.on('connection', (socket) => {
         console.log(`User directory deleted: ${userDir}`);
       }
     });
-  
+
     // Clean up files in the user's output directory
     const userOutputDir = path.join(__dirname, 'output', userUuid);
     fs.rm(userOutputDir, { recursive: true, force: true }, (err) => {
@@ -161,6 +175,7 @@ io.on('connection', (socket) => {
   });
 });
 
+// Start the server
 server.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

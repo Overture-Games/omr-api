@@ -148,6 +148,12 @@ input[type="file"] {
     width: 50%;
 }
 
+button:disabled,
+button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #767676; /* Optional: Change text color to indicate disabled state */
+}
 
 #processButton {
     margin-bottom: 10px;
