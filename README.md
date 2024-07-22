@@ -131,8 +131,26 @@ This project is licensed under the MIT License.
 
 ## requirements.txt
 ```
-Flask==2.0.2
-Pillow==8.4.0
-reportlab==3.6.3
-music21==6.3.0
+certifi==2024.7.4
+chardet==5.2.0
+charset-normalizer==3.3.2
+contourpy==1.2.1
+cycler==0.12.1
+fonttools==4.53.1
+idna==3.7
+joblib==1.4.2
+jsonpickle==3.2.2
+kiwisolver==1.4.5
+matplotlib==3.9.1
+more-itertools==10.3.0
+music21==9.1.0
+numpy==2.0.0
+packaging==24.1
+pillow==10.4.0
+pyparsing==3.1.2
+python-dateutil==2.9.0.post0
+requests==2.32.3
+six==1.16.0
+urllib3==2.2.2
+webcolors==24.6.0
 ```
