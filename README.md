@@ -1,3 +1,6 @@
+Sure, here is the `README.md` file as Markdown code:
+
+```markdown
 # OMR-API
 
 ## Description
@@ -47,34 +50,67 @@ OMR-API is a project designed to transcribe sheet music from various formats int
 4. Ensure Audiveris is installed and configured. Set `AUDIVERIS_PATH` in your environment or directly in the script (`utils.py`).
 
 ## Usage
-1. **Starting the Web Server**
-   - Run `server.js` using Node.js:
-     ```sh
-     npm start
-     ```
-   - The server will start running on `http://localhost:5000`.
+### Starting the Web Server
+- Run `server.js` using Node.js:
+  ```sh
+  npm start
+  ```
+- The server will start running on `http://localhost:5000`.
 
-2. **Uploading a File**
-   - Open a web browser and navigate to `http://localhost:5000`.
-   - Use the web interface to upload a file for transcription.
+### Uploading a File
+- Open a web browser and navigate to `http://localhost:5000`.
+- Use the web interface to upload a file for transcription.
 
-3. **Transcription Process**
-   - The selected file (supports HEIC format) will be converted to PNG if necessary.
-   - Audiveris will perform optical music recognition (OMR) to generate a MusicXML file in the `output` directory.
-   - The MusicXML file will be exported to MIDI format for playback and editing.
-   - After processing, unnecessary files in the `output` directory will be cleaned up automatically.
+### Transcription Process
+- The selected file (supports HEIC format) will be converted to PNG if necessary.
+- Audiveris will perform optical music recognition (OMR) to generate a MusicXML file in the `output` directory.
+- The MusicXML file will be exported to MIDI format for playback and editing.
+- After processing, unnecessary files in the `output` directory will be cleaned up automatically.
 
-4. **Downloading Transcribed Files**
-   - After processing, download links for the MIDI and MusicXML files will be provided in the web interface.
+### Downloading Transcribed Files
+- After processing, download links for the MIDI and MusicXML files will be provided in the web interface.
+
+## Docker Support
+### Building the Docker Image
+- Build the Docker image:
+  ```sh
+  docker build -t omr-api .
+  ```
+
+### Running the Docker Container
+- Run the Docker container:
+  ```sh
+  docker run -p 5000:5000 omr-api
+  ```
+
+### Using Docker Compose
+- Start the application with Docker Compose:
+  ```sh
+  docker-compose up
+  ```
+
+## Environment Variables
+Set the following environment variables in a `.env` file or directly in your environment:
+```
+PORT=5000
+PYTHON_PATH=/usr/bin/python3
+AUDIVERIS_PATH=/path/to/audiveris
+```
 
 ## Notes
 - Ensure sufficient system resources for Audiveris processing due to potential timeout issues.
 - For issues or enhancements, please open an issue on GitHub or contact the project maintainers.
 
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request for review.
+
+## License
+This project is licensed under the MIT License.
+
 ## package.json
 ```json
 {
-  "name": "backend",
+  "name": "omr-api",
   "version": "1.0.0",
   "description": "Backend server for file processing",
   "main": "server.js",
@@ -83,16 +119,20 @@ OMR-API is a project designed to transcribe sheet music from various formats int
     "start": "node server.js"
   },
   "dependencies": {
-    "child_process": "^1.0.2",
     "express": "^4.19.2",
-    "fs": "^0.0.1-security",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.1",
-    "path": "^0.12.7",
-    "socket.io": "^4.7.5",
-    "ws": "^8.18.0"
+    "socket.io": "^4.7.5"
   },
   "author": "",
   "license": "ISC"
 }
+```
+
+## requirements.txt
+```
+Flask==2.0.2
+Pillow==8.4.0
+reportlab==3.6.3
+music21==6.3.0
 ```
