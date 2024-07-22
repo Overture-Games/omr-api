@@ -1,5 +1,3 @@
-Sure, here is the `README.md` file as Markdown code:
-
 ```markdown
 # OMR-API
 
