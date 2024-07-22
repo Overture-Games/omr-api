@@ -30,8 +30,8 @@ OMR-API is a project designed to transcribe sheet music from various formats int
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone github.com/Overture-Games/omr-api
-   cd <project-directory>
+   git clone github.com/Overture-Games/omr-api.git
+   cd omr-api
    ```
 
 2. Install Python dependencies:
