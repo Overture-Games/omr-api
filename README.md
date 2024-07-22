@@ -1,4 +1,3 @@
-```markdown
 # OMR-API
 
 ## Description
