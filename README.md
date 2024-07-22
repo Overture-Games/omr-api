@@ -1,6 +1,3 @@
-Sure, here is the `README.md` file as Markdown code:
-
-```markdown
 # OMR-API
 
 ## Description
@@ -33,7 +30,7 @@ OMR-API is a project designed to transcribe sheet music from various formats int
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
+   git clone github.com/Overture-Games/omr-api
    cd <project-directory>
    ```
 
