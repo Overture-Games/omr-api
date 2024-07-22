@@ -1,3 +1,7 @@
+###
+### Utility functions for running Audiveris OMR on a file.
+###
+
 import os
 import subprocess
 import logging

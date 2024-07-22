@@ -1,3 +1,5 @@
+// Client-side JavaScript for the web application.
+
 // Prevent default behavior for drag events
 function preventDefaults(e) {
     e.preventDefault();

@@ -1,3 +1,5 @@
+// This file contains the server-side code for the application.
+
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
