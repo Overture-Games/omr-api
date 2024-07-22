@@ -85,12 +85,12 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
     if (code === 0) {
       const baseFilename = path.basename(req.file.filename, path.extname(req.file.filename));
-      const midiFilePath = path.join(userOutputDir, `${baseFilename}.mid`);
-      const mxlFilePath = path.join(userOutputDir, `${baseFilename}.mxl`);
+      const midiFilePath = path.join(userOutputDir, `${userUuid}_${baseFilename}.mid`);
+      const mxlFilePath = path.join(userOutputDir, `${userUuid}_${baseFilename}.mxl`);
 
       res.json({
-        midiFile: `/output/${userUuid}/${baseFilename}.mid`,
-        mxlFile: `/output/${userUuid}/${baseFilename}.mxl`
+        midiFile: `/output/${userUuid}/${userUuid}_${baseFilename}.mid`,
+        mxlFile: `/output/${userUuid}/${userUuid}_${baseFilename}.mxl`
       });
 
       // Optionally, delete the uploaded file after processing
