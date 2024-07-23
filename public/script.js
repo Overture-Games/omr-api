@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingBar = document.getElementById('loadingBar');
     const loadingBarInner = document.querySelector('.loading-bar-inner');
     const downloadButtons = document.getElementById('downloadButtons');
-    const messageElement = document.getElementById('message');
 
     // FAQ
     const faqItems = Array.from(document.querySelectorAll('.cs-faq-item'));
