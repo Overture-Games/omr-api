@@ -20,7 +20,6 @@ OMR-API is a project designed to transcribe sheet music from various formats int
 - **Music21**: Toolkit for computer-aided musicology.
 - **Audiveris**: Optical Music Recognition (OMR) software.
 - **HTML/CSS/JavaScript**: Frontend technologies for the web interface.
-- **Docker**: Containerization platform for consistent environment setup.
 
 ## Requirements
 - Python 3.8 or higher
