@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
 
 // Handle file upload
 app.post('/upload', upload.single('file'), (req, res) => {
-  const userUuid = req.body.userUuid; // Extract userUuid from the request body
+  const userUuid = req.body.userUuid;
   console.log("User UUID: %s\n", userUuid);
 
   if (!req.file) {

@@ -44,11 +44,21 @@
                 <li class="cs-faq-item active">
                     <button class="cs-button">
                         <span class="cs-button-text">
-                            How does the Sheet Music Transcriber work?
+                            How does sheetmusictomidi.com work?
                         </span>
                     </button>
                     <p class="cs-item-p">
-                        The Sheet Music Transcriber uses advanced algorithms to analyze uploaded sheet music images or PDFs and convert them into digital formats such as MIDI and MusicXML.
+                        sheetmusictomidi.com uses Audiveris’ open-source Optical Music Recognition engine to process sheet music images and convert them into digital, computer-readable formats: MusicXML and MIDI.
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            What would I use sheetmusictomidi.com for?
+                        </span>
+                    </button>
+                    <p class="cs-item-p">
+                        This converter is particularly helpful in getting a rough outline of music if the end-user is working with transcription or arrangements. There is high accuracy with screenshots of digitally rendered scores, but significantly lower accuracy for manually captured photos. For best results, please use a scanner application such as CamScanner and upload the file as a PNG.
                     </p>
                 </li>
                 <li class="cs-faq-item">
@@ -58,7 +68,17 @@
                         </span>
                     </button>
                     <p class="cs-item-p">
-                        The Sheet Music Transcriber supports JPEG, JPG, PNG, HEIC, and PDF file formats for sheet music uploads.
+                        sheetmusictomidi.com currently supports JPEG, JPG, PNG, HEIC, and SVG files for sheet music uploads. More file formats will be supported in the future!
+                    </p>
+                </li>
+                <li class="cs-faq-item">
+                    <button class="cs-button">
+                        <span class="cs-button-text">
+                            Why isn’t my file downloading properly?
+                        </span>
+                    </button>
+                    <p class="cs-item-p">
+                        Files may not download properly if the image resolution is too low. Please reload the page and try again with a higher quality image of the music.
                     </p>
                 </li>
                 <li class="cs-faq-item">
@@ -68,7 +88,7 @@
                         </span>
                     </button>
                     <p class="cs-item-p">
-                        The processing time depends on the complexity of the sheet music and the server load. Generally, it takes a few seconds to a few minutes to transcribe the sheet music.
+                        Currently, sheetmusictomidi.com only supports single-page conversions and has a processing time limit of 20 seconds for each request. As this page is in early development, it is likely that it will support multi-page conversions using file formats such as PDFs with higher processing power in the future.
                     </p>
                 </li>
                 <li class="cs-faq-item">
@@ -78,17 +98,25 @@
                         </span>
                     </button>
                     <p class="cs-item-p">
-                        Yes, once the sheet music is transcribed, you can download it in MIDI and MusicXML formats for further editing or playback.
+                        Yes, once the sheet music is transcribed, you can download it in MIDI and MusicXML formats for further editing or playback. MusicXML downloads will have the highest written note accuracy, whereas MIDI files will be accurate to how each note sounds.
                     </p>
                 </li>
                 <li class="cs-faq-item">
                     <button class="cs-button">
                         <span class="cs-button-text">
-                            Is the Sheet Music Transcriber free to use?
+                            What technologies are used in sheetmusictomidi.com?
                         </span>
                     </button>
                     <p class="cs-item-p">
-                        Yes, the Sheet Music Transcriber is completely free to use. Enjoy transcribing your sheet music hassle-free!
+                        <strong>Audiveris</strong>: Open-Source Optical Music Recognition (OMR) software.<br>
+                        <strong>Python</strong>: Core programming language for backend processing.<br>
+                        <strong>Node.js</strong>: JavaScript runtime for the web server.<br>
+                        <strong>Express.js</strong>: Web framework for Node.js.<br>
+                        <strong>Multer</strong>: Middleware for handling file uploads in Node.js.<br>
+                        <strong>Socket.io</strong>: Library for real-time communication between the web client and server.<br>
+                        <strong>Pillow</strong>: Python Imaging Library (PIL) fork for image processing.<br>
+                        <strong>Music21</strong>: Toolkit for computer-aided musicology, specifically converting MusicXML to MIDI.<br>
+                        <strong>HTML5/CSS/JavaScript</strong>: Frontend technologies for the web interface.
                     </p>
                 </li>
             </ul>
