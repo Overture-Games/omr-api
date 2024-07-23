@@ -9,6 +9,8 @@ import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import bodyParser from 'body-parser';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -36,6 +38,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 ensureDirectoryExistence(path.join(__dirname, 'uploads'));
 ensureDirectoryExistence(path.join(__dirname, 'output'));
+
+// Use body-parser middleware to parse JSON and urlencoded request bodies
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // CORS Middleware
 app.use((req, res, next) => {
@@ -172,6 +178,36 @@ io.on('connection', (socket) => {
         console.log(`User output directory deleted: ${userOutputDir}`);
       }
     });
+  });
+});
+
+// Email sending route
+app.post('/send-email', (req, res) => {
+  const { name, email, message } = req.body;
+
+  // Configure your email transport
+  let transporter = nodemailer.createTransport({
+    service: 'gmail', // You can use any email service
+    auth: {
+      user: 'your-email@gmail.com', // Your email
+      pass: 'your-email-password' // Your email password
+    }
+  });
+
+  // Configure the email options
+  let mailOptions = {
+    from: email,
+    to: 'your-email@gmail.com', // Your email
+    subject: 'Contact Form Submission',
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).send(error.toString());
+    }
+    res.status(200).send('Email sent: ' + info.response);
   });
 });
 
