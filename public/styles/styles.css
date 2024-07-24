@@ -226,6 +226,34 @@ button.disabled {
     margin-top: 20px;
 }
 
+#contactUsBtn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    width: 100%; /* Make the button fill the whole space */
+    margin-top: 20px; /* Add some space from the FAQ section */
+}
+
+#contactUsBtn:hover {
+    background-color: var(--primaryLight);
+}
+
+/* Center the button and make it fill the whole space under the FAQ section */
+.cs-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensure the FAQ section also takes full width */
+}
+
 
 @media only screen and (min-width: 0rem) {
     #contact-1333 {

@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import bodyParser from 'body-parser';
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
 dotenv.config();
 
@@ -99,8 +99,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
     if (code === 0) {
       const baseFilename = path.basename(req.file.filename, path.extname(req.file.filename));
-      const midiFilePath = path.join(userOutputDir, `${userUuid}_${baseFilename}.mid`);
-      const mxlFilePath = path.join(userOutputDir, `${userUuid}_${baseFilename}.mxl`);
 
       res.json({
         midiFile: `/output/${userUuid}/${baseFilename}.mid`,
@@ -181,34 +179,31 @@ io.on('connection', (socket) => {
   });
 });
 
+// Set SendGrid API key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Email sending route
 app.post('/send-email', (req, res) => {
   const { name, email, message } = req.body;
 
-  // Configure your email transport
-  let transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use any email service
-    auth: {
-      user: 'your-email@gmail.com', // Your email
-      pass: 'your-email-password' // Your email password
-    }
-  });
-
-  // Configure the email options
-  let mailOptions = {
-    from: email,
-    to: 'your-email@gmail.com', // Your email
-    subject: 'Contact Form Submission',
-    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+  const msg = {
+    to: process.env.EMAIL_USER_TO, // Your email
+    from: process.env.EMAIL_USER_FROM, // Verified sender email
+    subject: 'Contact Form Query',
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
   };
 
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).send(error.toString());
-    }
-    res.status(200).send('Email sent: ' + info.response);
-  });
+  sgMail.send(msg)
+    .then(() => {
+      res.status(300).send('Email sent successfully! We will get back to your query as soon as possible.');
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send(error.toString());
+    });
 });
 
 // Start the server
