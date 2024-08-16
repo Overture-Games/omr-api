@@ -150,8 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show the loading bar
         loadingBar.style.display = 'block';
         loadingBarInner.style.width = '0';
+        console.log('Loading bar started');
         setTimeout(() => {
             loadingBarInner.style.width = '100%';
+            console.log('Loading bar progress: 100%');
         }, 100);
 
         const formData = new FormData();
@@ -169,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Wait for the loading bar to complete
                 loadingBarInner.addEventListener('transitionend', () => {
+                    console.log('Loading bar transition ended');
                     loadingBar.style.display = 'none';
                     downloadButtons.style.display = 'flex'; // Show buttons after processing
 
@@ -206,5 +209,40 @@ document.addEventListener('DOMContentLoaded', () => {
             showErrorMessage('Error uploading file!');
             loadingBar.style.display = 'none';
         }
+    });
+
+    // Listen for processing complete event
+    socket.on('processingComplete', (data) => {
+        console.log('Processing complete:', data);
+        loadingBarInner.style.width = '100%';
+        loadingBarInner.addEventListener('transitionend', () => {
+            loadingBar.style.display = 'none';
+            downloadButtons.style.display = 'flex'; // Show buttons after processing
+
+            document.getElementById('downloadMidi').onclick = () => {
+                window.location.href = data.midiFile;
+            };
+
+            document.getElementById('downloadMxl').onclick = () => {
+                window.location.href = data.mxlFile;
+            };
+
+            // Listen for download completion
+            document.querySelectorAll('.download-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    socket.emit('fileDownloaded', { filePath: button.getAttribute('href') });
+                });
+            });
+
+            // Update the button to "Process Another File"
+            processButton.textContent = 'Process Another File';
+            processButton.disabled = false;
+            processButton.classList.remove('disabled');
+
+            // Reset the site when "Process Another File" is clicked
+            processButton.addEventListener('click', () => {
+                location.reload();
+            }, { once: true });
+        });
     });
 });

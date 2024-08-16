@@ -107,7 +107,7 @@ def run_audiveris(input_filepath, output_dir):
         omr_filepath = os.path.join(output_dir, omr_files[0])
         base_filename = os.path.splitext(os.path.basename(input_filepath))[0]
         mxl_filepath = os.path.join(output_dir, f"{base_filename}.mxl")
-        export_command = [AUDIVERIS_PATH, '-export', omr_filepath, '-output', mxl_filepath]
+        export_command = [AUDIVERIS_PATH, '-batch', '-export', omr_filepath, '-output', mxl_filepath]
 
         try:
             export_result = subprocess.run(export_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=20)
