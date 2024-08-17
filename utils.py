@@ -107,7 +107,8 @@ def run_audiveris(input_filepath, output_dir):
         omr_filepath = os.path.join(output_dir, omr_files[0])
         base_filename = os.path.splitext(os.path.basename(input_filepath))[0]
         mxl_filepath = os.path.join(output_dir, f"{base_filename}.mxl")
-        export_command = [AUDIVERIS_PATH, '-batch', '-export', omr_filepath, '-output', mxl_filepath]
+        # export_command = [AUDIVERIS_PATH, '-batch', '-export', omr_filepath, '-output', mxl_filepath]
+        export_command = [AUDIVERIS_PATH, '-export', omr_filepath, '-output', mxl_filepath]
 
         try:
             export_result = subprocess.run(export_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=20)
@@ -122,12 +123,17 @@ def run_audiveris(input_filepath, output_dir):
             logging.error(f'Export command failed: {e.stderr.decode("utf-8")}')
             return
 
-        logging.debug(f'Contents of output directory after exporting: {os.listdir(output_dir)}')
-
         if not os.path.exists(mxl_filepath):
             logging.error('No MusicXML file generated')
             return
 
+        logging.debug(f'Export output: {stdout.decode("utf-8")}')
+        logging.debug(f'Export errors: {stderr.decode("utf-8")}')
+        
+        generate_midi_from_mxl(input_filepath, output_dir)
+        cleanup_files(output_dir)
+        logging.debug(f'Contents of output directory after exporting: {os.listdir(output_dir)}')
+        
         logging.info("Processing complete")
 
     except subprocess.CalledProcessError as e:

@@ -131,11 +131,15 @@ input[type="file"] {
 }
 
 .loading-bar-inner {
-    height: 20px;
+    height: 30px; /* Increased height for better visibility */
     width: 0;
     background-color: #4CAF50;
     border-radius: 25px;
-    transition: width 25s;
+    transition: width 1s; /* Adjusted transition duration */
+}
+
+.loading-bar-inner.complete {
+    background-color: #47bdf4; /* Change color on completion */
 }
 
 #downloadButtons {

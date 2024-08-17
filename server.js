@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import cors from 'cors';
 import path from 'path';
 import { spawn } from 'child_process';
 import http from 'http';
@@ -19,7 +20,8 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 5000;
-const pythonPath = process.env.PYTHON_PATH || 'python3';
+// const pythonPath = '/home/ubuntu/omr-api/myenv/bin/python';
+const pythonPath = '/Users/hguan/Documents/GitHub/omr-api/myenv/bin/python';
 
 const server = http.createServer(app);
 const io = new Server(server);
@@ -43,12 +45,15 @@ ensureDirectoryExistence(path.join(__dirname, 'output'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// CORS Middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+const allowedOrigin = process.env.NODE_ENV === 'production' 
+  ? 'http://sheetmusictomidi.com' 
+  : 'http://localhost:5000'; // Change this to your local development URL
+
+app.use(cors({
+  origin: allowedOrigin,
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
 
 // Route for the root URL
 app.get('/', (req, res) => {
@@ -73,7 +78,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
   const inputFilePath = path.join(userUploadDir, req.file.filename);
 
-  // Move the uploaded file to the user's directory
+  // Move the uploaded file to the user directory
   try {
     fs.renameSync(req.file.path, inputFilePath);
   } catch (err) {
@@ -98,11 +103,16 @@ app.post('/upload', upload.single('file'), (req, res) => {
     console.log(`Python process exited with code ${code}`);
 
     if (code === 0) {
+      console.log('Processing complete:');
       const baseFilename = path.basename(req.file.filename, path.extname(req.file.filename));
 
+      const midiFile = `/output/${userUuid}/${baseFilename}.mid`;
+      const mxlFile = `/output/${userUuid}/${baseFilename}.mxl`;
+
       res.json({
-        midiFile: `/output/${userUuid}/${baseFilename}.mid`,
-        mxlFile: `/output/${userUuid}/${baseFilename}.mxl`
+        userUuid,
+        midiFile,
+        mxlFile
       });
 
       // Optionally, delete the uploaded file after processing
@@ -117,6 +127,26 @@ app.post('/upload', upload.single('file'), (req, res) => {
   });
 });
 
+// Endpoint to check if any .mid file exists
+app.get('/check-file', (req, res) => {
+  const { userUuid } = req.query;
+  const userOutputDir = path.join(__dirname, 'output', userUuid);
+
+  fs.readdir(userOutputDir, (err, files) => {
+    if (err) {
+      return res.status(500).json({ exists: false });
+    }
+
+    const midiFiles = files.filter(file => path.extname(file) === '.mid');
+    if (midiFiles.length > 0) {
+      const baseFilename = path.basename(midiFiles[0], '.mid'); // Get the base filename without extension
+      return res.json({ exists: true, baseFilename });
+    } else {
+      return res.status(404).json({ exists: false });
+    }
+  });
+});
+
 // Serve the output directory for downloads
 app.use('/output', express.static(path.join(__dirname, 'output')));
 
@@ -127,13 +157,16 @@ io.on('connection', (socket) => {
 
   const userDir = path.join(__dirname, 'uploads', userUuid);
 
-  // Ensure the user's directory exists
+  // Ensure the user directory exists
   ensureDirectoryExistence(userDir);
 
   console.log(`User connected: ${userUuid}`);
 
   // Emit the userUuid to the client
   socket.emit('userUuid', userUuid);
+
+  // Join a room with the userUuid
+  socket.join(userUuid);
 
   // Handle file upload event
   socket.on('fileUploaded', (filePath) => {
@@ -158,7 +191,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${userUuid}`);
 
-    // Delete the user's directory and its contents
+    // Delete the user directory and its contents
     fs.rm(userDir, { recursive: true, force: true }, (err) => {
       if (err) {
         console.error('Error deleting user directory:', err);
@@ -167,7 +200,7 @@ io.on('connection', (socket) => {
       }
     });
 
-    // Clean up files in the user's output directory
+    // Clean up files in the user output directory
     const userOutputDir = path.join(__dirname, 'output', userUuid);
     fs.rm(userOutputDir, { recursive: true, force: true }, (err) => {
       if (err) {
@@ -208,5 +241,5 @@ app.post('/send-email', (req, res) => {
 
 // Start the server
 server.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://ec2-54-242-127-146.compute-1.amazonaws.com:${port}/`);
 });

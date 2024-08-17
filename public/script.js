@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io.connect('http://localhost:5000');
+    // const socket = io.connect('http://sheetmusictomidi.com');
     let userUuid;
 
     // Handle receiving the userUuid from the server
     socket.on('userUuid', (uuid) => {
         console.log('Received userUuid:', uuid);
         userUuid = uuid;
+    });
+
+    // Verify socket connection
+    socket.on('connect', () => {
+        console.log('Socket connected');
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Socket disconnected');
     });
 
     // Prevent default behavior for drag events
@@ -59,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle selected files
     function handleFiles(files) {
-        const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/svg+xml', 'application/pdf'];
+        const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image.heic', 'image/svg+xml', 'application/pdf'];
         const unsupportedFiles = Array.from(files).filter(file => !supportedFormats.includes(file.type));
 
         if (unsupportedFiles.length > 0) {
@@ -151,55 +161,85 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingBar.style.display = 'block';
         loadingBarInner.style.width = '0';
         console.log('Loading bar started');
-        setTimeout(() => {
-            loadingBarInner.style.width = '100%';
-            console.log('Loading bar progress: 100%');
-        }, 100);
+
+        // Simulate loading progress (if real-time progress is not available)
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            if (progress < 95) { 
+                progress += 1;
+                loadingBarInner.style.width = `${progress}%`;
+                console.log(`Loading bar progress: ${progress}%`);
+            } else {
+                clearInterval(progressInterval);
+            }
+        }, 200);
 
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
         formData.append('userUuid', userUuid); // Append userUuid to the form data
 
         try {
+            console.log('Uploading file...');
             const response = await fetch('/upload', {
                 method: 'POST',
                 body: formData,
             });
 
             if (response.ok) {
-                const data = await response.json();
-
-                // Wait for the loading bar to complete
-                loadingBarInner.addEventListener('transitionend', () => {
-                    console.log('Loading bar transition ended');
-                    loadingBar.style.display = 'none';
-                    downloadButtons.style.display = 'flex'; // Show buttons after processing
-
-                    document.getElementById('downloadMidi').onclick = () => {
-                        window.location.href = data.midiFile;
-                    };
-
-                    document.getElementById('downloadMxl').onclick = () => {
-                        window.location.href = data.mxlFile;
-                    };
-
-                    // Listen for download completion
-                    document.querySelectorAll('.download-button').forEach(button => {
-                        button.addEventListener('click', () => {
-                            socket.emit('fileDownloaded', { filePath: button.getAttribute('href') });
+                console.log('File uploaded successfully, waiting for processing to complete...');
+    
+                const responseData = await response.json();
+                const userUuid = responseData.userUuid; // Ensure userUuid is correctly set
+                const checkFileInterval = setInterval(async () => {
+                    const checkResponse = await fetch(`/check-file?userUuid=${userUuid}`);
+                    const checkData = await checkResponse.json();
+    
+                    if (checkData.exists) {
+                        clearInterval(checkFileInterval);
+                        console.log('Processing complete: MIDI file is available');
+    
+                        clearInterval(progressInterval); // Stop the simulated progress
+                        loadingBarInner.style.width = '100%';
+                        loadingBarInner.classList.add('complete'); // Add class to change color
+                        console.log('Loading bar progress: 100%');
+    
+                        loadingBarInner.addEventListener('transitionend', () => {
+                            console.log('Loading bar transition ended');
+                            loadingBar.style.display = 'none';
+                            downloadButtons.style.display = 'flex'; // Show buttons after processing
+    
+                            // Use the base filename returned by the server
+                            const baseFilename = checkData.baseFilename;
+    
+                            // Update the existing download button for MIDI file
+                            document.getElementById('downloadMidi').onclick = () => {
+                                window.location.href = `/output/${userUuid}/${baseFilename}.mid`;
+                            };
+    
+                            // Update the existing download button for MXL file
+                            document.getElementById('downloadMxl').onclick = () => {
+                                window.location.href = `/output/${userUuid}/${baseFilename}.mxl`;
+                            };
+    
+                            // Listen for download completion
+                            document.querySelectorAll('.download-button').forEach(button => {
+                                button.addEventListener('click', () => {
+                                    console.log('Download button clicked');
+                                });
+                            });
+    
+                            // Update the button to "Process Another File"
+                            processButton.textContent = 'Process Another File';
+                            processButton.disabled = false;
+                            processButton.classList.remove('disabled');
+    
+                            // Reset the site when "Process Another File" is clicked
+                            processButton.addEventListener('click', () => {
+                                location.reload();
+                            }, { once: true });
                         });
-                    });
-
-                    // Update the button to "Process Another File"
-                    processButton.textContent = 'Process Another File';
-                    processButton.disabled = false;
-                    processButton.classList.remove('disabled');
-
-                    // Reset the site when "Process Another File" is clicked
-                    processButton.addEventListener('click', () => {
-                        location.reload();
-                    }, { once: true });
-                });
+                    }
+                }, 5000); // Check every 5 seconds
             } else {
                 showErrorMessage('File upload failed!');
                 loadingBar.style.display = 'none';
@@ -208,41 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error uploading file:', error);
             showErrorMessage('Error uploading file!');
             loadingBar.style.display = 'none';
-        }
-    });
-
-    // Listen for processing complete event
-    socket.on('processingComplete', (data) => {
-        console.log('Processing complete:', data);
-        loadingBarInner.style.width = '100%';
-        loadingBarInner.addEventListener('transitionend', () => {
-            loadingBar.style.display = 'none';
-            downloadButtons.style.display = 'flex'; // Show buttons after processing
-
-            document.getElementById('downloadMidi').onclick = () => {
-                window.location.href = data.midiFile;
-            };
-
-            document.getElementById('downloadMxl').onclick = () => {
-                window.location.href = data.mxlFile;
-            };
-
-            // Listen for download completion
-            document.querySelectorAll('.download-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    socket.emit('fileDownloaded', { filePath: button.getAttribute('href') });
-                });
-            });
-
-            // Update the button to "Process Another File"
-            processButton.textContent = 'Process Another File';
-            processButton.disabled = false;
-            processButton.classList.remove('disabled');
-
-            // Reset the site when "Process Another File" is clicked
-            processButton.addEventListener('click', () => {
-                location.reload();
-            }, { once: true });
-        });
+        };
     });
 });
