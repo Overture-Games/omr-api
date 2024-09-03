@@ -21,7 +21,7 @@
                 <span class="header">Drag & Drop</span>
                 <span class="header">or <span class="button">browse</span></span>
                 <input type="file" id="fileInput" hidden />
-                <span class="support">Supports: JPEG, JPG, PNG, HEIC, SVG, PDF</span>
+                <span class="support">Supports: JPEG, JPG, PNG, HEIC, SVG</span>
             </div>
             <button class="cs-button-solid" id="processButton">Begin Processing</button>
             <div id="loadingBar" class="loading-bar" style="display: none;">
@@ -88,7 +88,7 @@
                         </span>
                     </button>
                     <p class="cs-item-p">
-                        Currently, sheetmusictomidi.com only supports single-page conversions and has a processing time limit of 20 seconds for each request. As this page is in early development, it is likely that it will support multi-page conversions using file formats such as PDFs with higher processing power in the future.
+                        Currently, sheetmusictomidi.com only supports single-page conversions and has a processing time limit of 40 seconds for each request. It will support multi-page conversions using file formats such as PDFs with higher processing power in the future.
                     </p>
                 </li>
                 <li class="cs-faq-item">
@@ -109,6 +109,9 @@
                     </button>
                     <p class="cs-item-p">
                         <strong>Audiveris</strong>: Open-Source Optical Music Recognition (OMR) software.<br>
+                        <strong>AWS EC2</strong>: Cloud computing service for hosting the web server.<br>
+                        <strong>Nginx</strong>: Web server for handling HTTP requests.<br>
+                        <strong>PM2</strong>: Process manager for Node.js applications.<br>
                         <strong>Python</strong>: Core programming language for backend processing.<br>
                         <strong>Node.js</strong>: JavaScript runtime for the web server.<br>
                         <strong>Express.js</strong>: Web framework for Node.js.<br>
@@ -117,6 +120,7 @@
                         <strong>Pillow</strong>: Python Imaging Library (PIL) fork for image processing.<br>
                         <strong>Music21</strong>: Toolkit for computer-aided musicology, specifically converting MusicXML to MIDI.<br>
                         <strong>HTML5/CSS/JavaScript</strong>: Frontend technologies for the web interface.
+                        
                     </p>
                 </li>
             </ul>
@@ -124,8 +128,19 @@
     </div>
 </section>
 
-<!-- Contact Us Button -->
-<button id="contactUsBtn" class="cs-button-solid">Submit Feedback / Contact Us</button>
+<!-- Backed By Section -->
+<section id="backed-by" class="cs-container">
+    <div class="cs-content">
+        <span class="cs-topper">Backed By</span>
+        <img src="assets/websitelogos.png" alt="Backed By Logos" class="backed-by-image">
+    </div>
+</section>
+
+<!-- Floating Contact Us Button -->
+<button id="contactUsBtn" class="cs-float-button">
+    <i class="fas fa-envelope"></i>
+</button>
+
 
 <!-- Contact Us Modal -->
 <div id="contactUsModal" class="modal">
@@ -167,6 +182,12 @@
         </script>
     </div>
 </div>
+<footer class="site-footer">
+    <div class="container">
+        <p>&copy; 2024 sheetmusictomidi.com. All rights reserved.</p>
+        <p>Created by Harry Guan, Overture Games Inc.</p>
+    </div>
+</footer>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="script.js"></script>

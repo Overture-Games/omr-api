@@ -142,6 +142,55 @@ input[type="file"] {
     background-color: #47bdf4; /* Change color on completion */
 }
 
+#backed-by {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.backed-by-image {
+    width: 100%; /* Makes the image span the entire width of the page */
+    height: 10%;
+    padding-bottom: 10px;
+}
+
+.cs-float-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Ensure no extra padding */
+    overflow: hidden; /* Prevent content overflow */
+    text-align: center; /* Center the icon */
+    line-height: 0; /* Remove line-height if it's affecting the size */
+    box-sizing: border-box; /* Ensure padding doesn't affect the size */
+}
+
+.cs-float-button i {
+    margin: 0; /* Remove any default margin from the icon */
+    padding: 0; /* Remove any default padding from the icon */
+}
+
+.cs-float-button:hover {
+    background-color: var(--primaryLight);
+    transform: scale(1.1);
+}
+
 #downloadButtons {
     display: none; 
     width: 100%;
@@ -172,40 +221,43 @@ button.disabled {
 
 /* Modal styles */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
+    display: none;
+    position: fixed;
+    z-index: 1001;
     left: 0;
     top: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
-    overflow: auto; 
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
+    background-color: white;
+    margin: 5% auto; /* Reduced margin to make the modal larger */
+    padding: 3rem; /* Increased padding for a larger feel */
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%; /* Increased width */
+    max-width: 600px; /* Increased max-width */
+    border-radius: 10px; /* Slightly more rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Inter', sans-serif;
+    color: var(--headerColor);
 }
 
 .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 32px; /* Increased font size for the close button */
     font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: var(--headerColor);
     text-decoration: none;
-    cursor: pointer;
 }
 
 #contactForm {
@@ -215,39 +267,60 @@ button.disabled {
 
 #contactForm label {
     margin-top: 10px;
+    font-size: 1.1rem; /* Increased font size */
+    color: var(--headerColor);
 }
 
 #contactForm input,
 #contactForm textarea {
-    padding: 10px;
-    margin-top: 5px;
+    padding: 12px; /* Increased padding for a bigger input */
+    margin-top: 10px; /* Increased spacing */
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 6px; /* More rounded corners */
+    font-size: 18px; /* Increased font size */
+    box-sizing: border-box;
+    width: 100%; /* Full width for inputs */
+    font-family: 'Inter', sans-serif; /* Ensure consistent font */
+}
+
+#contactForm textarea {
+    resize: vertical; /* Allow vertical resizing */
+}
+
+#contactForm input:focus,
+#contactForm textarea:focus {
+    border-color: var(--primary);
+    outline: none;
 }
 
 #contactForm button {
     margin-top: 20px;
-}
-
-#contactUsBtn {
     background-color: var(--primary);
     color: white;
     border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+    padding: 15px 25px; /* Increased padding for a larger button */
+    font-size: 18px; /* Increased font size */
+    border-radius: 6px;
     cursor: pointer;
-    border-radius: 4px;
     transition: background-color 0.3s;
-    width: 100%;
-    margin-top: 10px;
 }
 
-#contactUsBtn:hover {
+#contactForm button:hover {
     background-color: var(--primaryLight);
+}
+
+.site-footer {
+    background-color: #47bdf4;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    border-top: 1px solid #e7e7e7;
+    font-family: 'Inter', sans-serif;
+}
+
+.site-footer p {
+    margin: 5px 0;
 }
 
 /* Center the button and make it fill the whole space under the FAQ section */
@@ -257,7 +330,6 @@ button.disabled {
     align-items: center;
     width: 100%; /* Ensure the FAQ section also takes full width */
 }
-
 
 @media only screen and (min-width: 0rem) {
     #contact-1333 {
@@ -300,36 +372,9 @@ button.disabled {
     #contact-1333 .cs-form .cs-title {
         margin: 0 0 clamp(1rem, 3vw, 1.75rem) 0;
     }
-    #contact-1333 .cs-label {
-        font-size: clamp(0.875rem, 1.5vw, 1rem);
-        width: 100%;
-        color: var(--headerColor);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 0.25rem;
-    }
-    #contact-1333 .cs-input {
-        font-size: 1rem;
-        width: 100%;
-        height: 3.5rem;
-        padding: 0;
-        padding-left: 1.5rem;
-        color: var(--headerColor);
-        background-color: #fff;
-        border: none;
-        box-sizing: border-box;
-    }
     #contact-1333 .cs-input::placeholder {
         color: #767676;
         opacity: 0.6;
-    }
-    #contact-1333 .cs-textarea {
-        min-height: 7.5rem;
-        padding-top: 1.5rem;
-        margin: 0 0 clamp(1rem, 3vw, 1.75rem) 0;
-        font-family: inherit;
     }
     #contact-1333 .cs-button-solid {
         font-size: 1rem;
