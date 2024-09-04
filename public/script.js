@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io.connect('http://localhost:5000');
-    // const socket = io.connect('http://sheetmusictomidi.com');
+    // const socket = io.connect('https://sheetmusictomidi.com');
     let userUuid;
 
     // Handle receiving the userUuid from the server
