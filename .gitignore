@@ -1,13 +1,42 @@
-# Node modules directory
-node_modules/
-
-# Environment variables file
-.env
-
-# Log files
-npm-debug.log
-yarn-error.log
-*.log
-
-# OS generated files
 .DS_Store
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+myenv/
+env/
+venv/
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+debug.log*
+out.log
+
+package-lock.json
+pip-log.txt
+pip-delete-this-directory.txt
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+.env
+.env.local
+.env.*.local
+
+dist/
+build/
+.cache/
+
+tmp/
+
