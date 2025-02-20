@@ -66,25 +66,6 @@ OMR-API is a project designed to transcribe sheet music from various formats int
 ### Downloading Transcribed Files
 - After processing, download links for the MIDI and MusicXML files will be provided in the web interface.
 
-## Docker Support
-### Building the Docker Image
-- Build the Docker image:
-  ```sh
-  docker build -t omr-api .
-  ```
-
-### Running the Docker Container
-- Run the Docker container:
-  ```sh
-  docker run -p 5000:5000 omr-api
-  ```
-
-### Using Docker Compose
-- Start the application with Docker Compose:
-  ```sh
-  docker-compose up
-  ```
-
 ## Environment Variables
 Set the following environment variables in a `.env` file or directly in your environment:
 ```
@@ -97,67 +78,5 @@ AUDIVERIS_PATH=/path/to/audiveris
 - Ensure sufficient system resources for Audiveris processing due to potential timeout issues.
 - For issues or enhancements, please open an issue on GitHub or contact the project maintainers.
 
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request for review.
-
 ## License
 This project is licensed under the MIT License.
-
-## package.json
-```json
-{
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "Backend server for file processing",
-  "main": "server.js",
-  "type": "module",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "child_process": "^1.0.2",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "fs": "^0.0.1-security",
-    "multer": "^1.4.4",
-    "node-fetch": "^2.6.1",
-    "path": "^0.12.7",
-    "socket.io": "^4.7.5",
-    "uuid": "^10.0.0",
-    "ws": "^8.18.0"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^6.0.0",
-    "autoprefixer": "^10.4.19",
-    "cross-env": "^7.0.3"
-  }
-}
-```
-
-## requirements.txt
-```
-certifi==2024.7.4
-chardet==5.2.0
-charset-normalizer==3.3.2
-contourpy==1.2.1
-cycler==0.12.1
-fonttools==4.53.1
-idna==3.7
-joblib==1.4.2
-jsonpickle==3.2.2
-kiwisolver==1.4.5
-matplotlib==3.9.1
-more-itertools==10.3.0
-music21==9.1.0
-numpy==2.0.0
-packaging==24.1
-pillow==10.4.0
-pyparsing==3.1.2
-python-dateutil==2.9.0.post0
-requests==2.32.3
-six==1.16.0
-urllib3==2.2.2
-webcolors==24.6.0
-```
